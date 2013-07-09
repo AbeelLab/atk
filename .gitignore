@@ -2,7 +2,7 @@
 *.log
 
 # Project specific
-bin/*
+bin/
 
 # Eclipse specific
 .classpath
