@@ -7,6 +7,7 @@ bin/
 # Eclipse specific
 .classpath
 .cache
+.settings
 
 # sbt specific
 dist/*
