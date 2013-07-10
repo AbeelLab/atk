@@ -17,6 +17,8 @@ package atk.util
 import java.io.PrintWriter
 import java.util.Date
 import java.lang.management.ManagementFactory
+import scala.io.Source
+import java.io.File
 
 
 /**
@@ -24,12 +26,19 @@ import java.lang.management.ManagementFactory
  */
 trait Tool {
 
-  //def log(str: String) = { println(str) }
+ 
 
-  private val logger = new PrintWriter(classFileName + ".log")
+  private val logger = new PrintWriter(classFileName +"."+System.currentTimeMillis()+ ".log")
 
   private val startTime = System.currentTimeMillis();
 
+  /**
+   * 
+   */
+  def lines(file:String,skipComments:Boolean=true,skipBlank:Boolean=true):List[String]={
+    Source.fromFile(new File(file)).getLines.filterNot(f=>skipComments&&f.startsWith("#")).filterNot(f=>skipBlank&&f.trim.size==0).toList
+  }
+  
   def log(str: String) = {
     logger.println(str)
     logger.flush()
