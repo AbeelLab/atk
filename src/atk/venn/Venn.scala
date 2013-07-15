@@ -39,13 +39,14 @@ object Venn {
 
     val counts = membership.values.toList.groupBy(x => x).mapValues(_.size)
     if (exportTxt) {
-      val export = membership.groupBy(f=>f._2).toList
-      export.map(f=>{
-    	  val pw=new PrintWriter(outFile+".set."+f._1+".txt")
-    	  pw.println(f._2.keySet.mkString("\n"))
-    	  pw.close
+      val export = membership.groupBy(f => f._2).toList
+      export.map(f => {
+        val fileLabel = (f._1.map(f => labelMap.getOrElse(f, "missing"))).toList.mkString("_")
+        val pw = new PrintWriter(outFile + ".set." +fileLabel+ ".txt")
+        pw.println(f._2.keySet.mkString("\n"))
+        pw.close
       })
-      
+
     }
 
     var venn = Source.fromFile("resources/venn/venn" + list.length + "a.svg").mkString
