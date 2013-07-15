@@ -8,6 +8,7 @@ import org.apache.batik.transcoder.SVGAbstractTranscoder
 import java.io.FileOutputStream
 import org.apache.batik.transcoder.TranscoderOutput
 import java.io.File
+import java.io.PrintWriter
 /**
  * Helper object to make Venn diagrams
  *
@@ -18,7 +19,7 @@ object Venn {
    * List is a list of pairs where the first piece is the label of the set and the second part is all the elements belonging to that set.
    *
    */
-  def makeVenn(outFile: File, list: List[(String, List[String])]) {
+  def makeVenn(outFile: File, list: List[(String, List[String])], exportTxt: Boolean = false) {
 
     val membership = scala.collection.mutable.Map.empty[String, String]
     val chars = ('A' to 'E').toList //List('A', 'B', 'C', 'D', 'E')
@@ -36,7 +37,16 @@ object Venn {
 
     }
 
-    val counts = membership.values.groupBy(x => x).mapValues(_.size)
+    val counts = membership.values.toList.groupBy(x => x).mapValues(_.size)
+    if (exportTxt) {
+      val export = membership.groupBy(f=>f._2).toList
+      export.map(f=>{
+    	  val pw=new PrintWriter(outFile+".set."+f._1+".txt")
+    	  pw.println(f._2.keySet.mkString("\n"))
+    	  pw.close
+      })
+      
+    }
 
     var venn = Source.fromFile("resources/venn/venn" + list.length + "a.svg").mkString
 
