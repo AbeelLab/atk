@@ -22,6 +22,7 @@ import java.io.File
 
 
 /**
+ * Utility methods to create tools
  * @author Thomas Abeel
  */
 trait Tool {
@@ -30,6 +31,7 @@ trait Tool {
 
   private val logger = new PrintWriter(classFileName +"."+System.currentTimeMillis()+ ".log")
 
+  logger.print(generatorInfo+"\n")
   private val startTime = System.currentTimeMillis();
 
   /**
@@ -45,11 +47,12 @@ trait Tool {
     println(str)
   }
 
+  
   def finish(out: PrintWriter = logger) = {
-    println("## This analysis finished " + new Date())
-    out.println("## This analysis finished " + new Date())
+    print("## This analysis finished " + new Date()+"\n")
+    out.print("## This analysis finished " + new Date()+"\n")
     if (out == logger)
-      out.println("## Run time: " + new TimeInterval(System.currentTimeMillis() - startTime))
+      out.print("## Run time: " + new TimeInterval(System.currentTimeMillis() - startTime)+"\n")
     out.close()
   }
   def classFileName() = { Thread.currentThread().getStackTrace()(2).getFileName() };
