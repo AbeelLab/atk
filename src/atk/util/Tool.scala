@@ -34,14 +34,18 @@ trait Tool {
   logger.print(generatorInfo+"\n")
   private val startTime = System.currentTimeMillis();
 
+  def tMap(list:List[String],keyColumn:Int=0,valueColumn:Int=1,sep:String="\t",splitLimit:Int=2):Map[String,String]={
+    list.map(l=>{val arr=l.split(sep,splitLimit);arr(keyColumn)->arr(valueColumn)}).toMap
+  }
+  
   /**
    * 
    */
-  def lines(file:String,skipComments:Boolean=true,skipBlank:Boolean=true):List[String]={
+  def tLines(file:String,skipComments:Boolean=true,skipBlank:Boolean=true):List[String]={
     Source.fromFile(new File(file)).getLines.filterNot(f=>skipComments&&f.startsWith("#")).filterNot(f=>skipBlank&&f.trim.size==0).toList
   }
   
-  def log(str: String) = {
+  def log(str: Any) = {
     logger.println(str)
     logger.flush()
     println(str)
