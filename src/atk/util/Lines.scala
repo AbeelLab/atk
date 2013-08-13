@@ -1,0 +1,35 @@
+/*
+ * This work is licensed under the Creative Commons
+ * Attribution-NonCommercial-NoDerivs 3.0 Unported License.
+ * To view a copy of this license, visit
+ * http://creativecommons.org/licenses/by-nc-nd/3.0/
+ * or send a letter to Creative Commons, 444 Castro Street,
+ * Suite 900, Mountain View, California, 94041, USA.
+ *
+ * A copy of the license is included in LICENSE.txt
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ *
+ * Copyright 2005-2013 Thomas Abeel
+ */
+package atk.util
+
+import scala.io.Source
+import java.io.File
+/**
+ * Utility methods to handle lines in files
+ *
+ * @author Thomas Abeel
+ */
+trait Lines {
+  def tMap(list: List[String], keyColumn: Int = 0, valueColumn: Int = 1, sep: String = "\t", splitLimit: Int = 2): Map[String, String] = {
+    list.map(l => { val arr = l.split(sep, splitLimit); arr(keyColumn) -> arr(valueColumn) }).toMap
+  }
+
+  /**
+   *
+   */
+  def tLines(file: String, skipComments: Boolean = true, skipBlank: Boolean = true): List[String] = {
+    Source.fromFile(new File(file)).getLines.filterNot(f => skipComments && f.startsWith("#")).filterNot(f => skipBlank && f.trim.size == 0).toList
+  }
+}
