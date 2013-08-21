@@ -26,10 +26,22 @@ trait Lines {
     list.map(l => { val arr = l.split(sep, splitLimit); arr(keyColumn) -> arr(valueColumn) }).toMap
   }
 
+  implicit def toLeft[String, File](left: String): Either[String, File] = Left(left)
+
+  implicit def toRight[String, File](right: File): Either[String, File] = Right(right)
+
   /**
    *
    */
-  def tLines(file: String, skipComments: Boolean = true, skipBlank: Boolean = true): List[String] = {
-    Source.fromFile(new File(file)).getLines.filterNot(f => skipComments && f.startsWith("#")).filterNot(f => skipBlank && f.trim.size == 0).toList
+  def tLines(file: Either[String, File], skipComments: Boolean = true, skipBlank: Boolean = true): List[String] = {
+    val ff= file.fold(new File(_), identity)
+    if(!ff.exists()){
+      var parent=ff
+      while(parent != null && !parent.exists()){
+        System.err.println("Invalid path: "+parent)
+        parent=parent.getParentFile()
+      }
+    }
+    Source.fromFile(ff).getLines.filterNot(f => skipComments && f.startsWith("#")).filterNot(f => skipBlank && f.trim.size == 0).toList
   }
 }
