@@ -20,36 +20,34 @@ import java.lang.management.ManagementFactory
 import scala.io.Source
 import java.io.File
 
-
 /**
  * Utility methods to create tools
- * 
+ *
  * @author Thomas Abeel
  */
-trait Tool extends Lines{
+trait Tool extends Lines {
 
- 
+  private var logger: PrintWriter = null;
 
-  private val logger = new PrintWriter(classFileName +"."+System.currentTimeMillis()+ ".log")
-
-  logger.print(generatorInfo+"\n")
   private val startTime = System.currentTimeMillis();
 
-  
-  
   def log(str: Any) = {
+    if (logger == null) {
+      logger.print(generatorInfo + "\n")
+      new PrintWriter(classFileName + "." + System.currentTimeMillis() + ".log")
+    }
     logger.println(str)
     logger.flush()
     println(str)
   }
 
-  
   def finish(out: PrintWriter = logger) = {
-    print("## This analysis finished " + new Date()+"\n")
-    out.print("## This analysis finished " + new Date()+"\n")
-    if (out == logger)
-      out.print("## Run time: " + new TimeInterval(System.currentTimeMillis() - startTime)+"\n")
-    out.close()
+    print("## This analysis finished " + new Date() + "\n")
+    if (out != null) {
+      out.print("## This analysis finished " + new Date() + "\n")
+      out.print("## Run time: " + new TimeInterval(System.currentTimeMillis() - startTime) + "\n")
+      out.close()
+    }
   }
   def classFileName() = { Thread.currentThread().getStackTrace()(2).getFileName() };
 
