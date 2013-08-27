@@ -33,8 +33,8 @@ trait Tool extends Lines {
 
   def log(str: Any) = {
     if (logger == null) {
+      logger = new PrintWriter(classFileName + "." + System.currentTimeMillis() + ".log")
       logger.print(generatorInfo + "\n")
-      new PrintWriter(classFileName + "." + System.currentTimeMillis() + ".log")
     }
     logger.println(str)
     logger.flush()
