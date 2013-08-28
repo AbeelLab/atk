@@ -19,6 +19,9 @@ import java.util.Date
 import java.lang.management.ManagementFactory
 import scala.io.Source
 import java.io.File
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.TimeZone
 
 /**
  * Utility methods to create tools
@@ -28,6 +31,15 @@ import java.io.File
 trait Tool extends Lines {
 
   private var logger: PrintWriter = null;
+
+  private val timestampFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+
+  timestampFormat.setTimeZone(TimeZone.getTimeZone("UTC"))
+
+  def timestamp(): String = {
+    timestampFormat.format(new Date(System.currentTimeMillis()))
+
+  }
 
   private val startTime = System.currentTimeMillis();
 
