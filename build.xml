@@ -1,99 +1,139 @@
 <?xml version="1.0"?>
-<project name="ATK" basedir="." default="dist">
+<project
+    name="ATK"
+    basedir="."
+    default="dist" >
 
-	<property name="version" value="1" />
+    <property
+        name="version"
+        value="1" />
 
-	<property name="build" value="build/" />
+    <property
+        name="build"
+        value="build/" />
 
-	<property name="src" value="src" />
+    <property
+        name="src"
+        value="src" />
 
-	<property name="project" value="atk" />
+    <property
+        name="project"
+        value="atk" />
 
-	<property name="dist" value="${project}-${version}" />
+    <property
+        name="dist"
+        value="${project}-${version}" />
 
-	<property name="jar" value="${project}.jar" />
+    <property
+        name="jar"
+        value="${project}.jar" />
 
-	<target name="dist">
+    <target name="dist" >
 
-		<taskdef resource="scala/tools/ant/antlib.xml">
+        <taskdef resource="scala/tools/ant/antlib.xml" >
 
-			<classpath>
+            <classpath>
 
-				<fileset dir="lib/">
+                <fileset dir="lib/" >
 
-					<include name="**/*.jar" />
-				</fileset>
+                    <include name="**/*.jar" />
+                </fileset>
 
-				<fileset dir="lib_compile/">
+                <fileset dir="lib_compile/" >
 
-					<include name="**/*.jar" />
-				</fileset>
-				<!-- <pathelement location="../lib/scala-compiler.jar" /> -->
+                    <include name="**/*.jar" />
+                </fileset>
+                <!-- <pathelement location="../lib/scala-compiler.jar" /> -->
 
 
-				<!-- <pathelement location="${scala-library.jar}" /> -->
-			</classpath>
-		</taskdef>
+                <!-- <pathelement location="${scala-library.jar}" /> -->
+            </classpath>
+        </taskdef>
 
-		<!-- <delete failonerror="false" dir="${build}" /> -->
-		<!-- <delete failonerror="false" dir="${dist}" /> -->
+        <!-- <delete failonerror="false" dir="${build}" /> -->
+        <!-- <delete failonerror="false" dir="${dist}" /> -->
 
-		<mkdir dir="${build}" />
+        <mkdir dir="${build}" />
 
-		<mkdir dir="${dist}" />
+        <mkdir dir="${dist}" />
 
-		<propertyfile file="${build}/tool.properties">
+        <propertyfile file="${build}/tool.properties" >
 
-			<entry key="program" value="${project}" />
+            <entry
+                key="program"
+                value="${project}" />
 
-			<entry key="version" value="${version}" />
-		</propertyfile>
+            <entry
+                key="version"
+                value="${version}" />
+        </propertyfile>
 
-		<scalac destdir="${build}" excludes="junit/**" srcdir="${src}">
+        <scalac
+            destdir="${build}"
+            excludes="junit/**"
+            srcdir="${src}" >
 
-			<classpath>
-				<fileset dir="lib_compile/">
+            <classpath>
 
-					<include name="**/*.jar" />
-				</fileset>
-				<fileset dir="lib/">
+                <fileset dir="lib_compile/" >
 
-					<include name="**/*.jar" />
-				</fileset>
+                    <include name="**/*.jar" />
+                </fileset>
 
-			</classpath>
+                <fileset dir="lib/" >
 
-		</scalac>
+                    <include name="**/*.jar" />
+                </fileset>
+            </classpath>
+        </scalac>
 
-		<javac destdir="${build}" excludes="junit/**" srcdir="${src}">
+        <javac
+            destdir="${build}"
+            excludes="junit/**"
+            srcdir="${src}" >
 
-			<classpath>
+            <classpath>
 
-				<fileset dir="lib">
+                <fileset dir="lib" >
 
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-		</javac>
+                    <include name="**/*.jar" />
+                </fileset>
+            </classpath>
+        </javac>
 
-		
+        <copy todir="${build}" >
 
-		<copy todir="${dist}">
+            <fileset dir="resources/" >
 
-			<fileset dir="lib/">
+                <include name="**/*.svg" />
+            </fileset>
+        </copy>
 
-				<include name="**/*.jar" />
-			</fileset>
-		</copy>
+        <copy todir="${dist}" >
 
-		<jar basedir="${build}" destfile="${dist}/${jar}">
-		</jar>
+            <fileset dir="lib/" >
 
-		<zip basedir="." destfile="${dist}.zip" includes="${dist}/**/*" />
+                <include name="**/*.jar" />
+            </fileset>
+        </copy>
 
-		<delete dir="${dist}" failonerror="false" />
+        <jar
+            basedir="${build}"
+            destfile="${dist}/${jar}" >
+        </jar>
 
-		<delete dir="${build}" failonerror="false" />
-	</target>
+        <zip
+            basedir="."
+            destfile="${dist}.zip"
+            includes="${dist}/**/*" />
+
+        <delete
+            dir="${dist}"
+            failonerror="false" />
+
+        <delete
+            dir="${build}"
+            failonerror="false" />
+    </target>
 
 </project>
