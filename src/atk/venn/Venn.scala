@@ -49,7 +49,8 @@ object Venn {
 
     }
 
-    var venn = Source.fromFile("resources/venn/venn" + list.length + "a.svg").mkString
+    val url=Venn.getClass().getResource("/venn/venn" + list.length + "a.svg")
+    var venn = Source.fromURL(url).mkString
 
     val keyCombinations = (1 to chars.size).flatMap(chars.combinations).toList
 
