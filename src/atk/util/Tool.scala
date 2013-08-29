@@ -31,7 +31,7 @@ trait Tool extends Lines {
 
   private var logger: PrintWriter = null;
 
-  private val timestampFormat:SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss.SSS")
+  private val timestampFormat:SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH.mm.ss''SSS")
 
   
   timestampFormat.setTimeZone(TimeZone.getTimeZone("UTC"))
