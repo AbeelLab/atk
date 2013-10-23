@@ -1,4 +1,4 @@
-package zookeeper.gff
+package atk.compbio.gff
 
 import atk.util.MD5Tools
 /**

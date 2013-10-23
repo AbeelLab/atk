@@ -1,4 +1,4 @@
-package zookeeper.gff
+package atk.compbio.gff
 
 import java.io.File
 import scala.io.Source
