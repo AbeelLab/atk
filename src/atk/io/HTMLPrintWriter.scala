@@ -8,7 +8,13 @@ class HTMLPrintWriter(str: String) extends PrintWriter(str: String) {
     println("<table "+option+" >")
   }
 
+  def h1(str:String)=tag(str,"h1")
+  
   def h2(str:String)=tag(str,"h2")
+  
+  def h3(str:String)=tag(str,"h3")
+  
+  def h4(str:String)=tag(str,"h4")
   
   def printTableClose = { println("</table>") }
 
