@@ -22,12 +22,21 @@ import java.io.File
  * @author Thomas Abeel
  */
 trait Lines {
-  def tColumn(column:Int,list:List[String], sep: String = "\t")={
+  def tColumns(columns: List[Int], list: List[String], sep: String = "\t") = {
+    list.map(line => {
+      val arr = line.split(sep)
+      columns.map(arr(_))
+
+    })
+
+  }
+
+  def tColumn(column: Int, list: List[String], sep: String = "\t") = {
     list.map(_.split(sep)(column))
   }
-  
-  def tMap(list: List[String], keyColumn: Int = 0, valueColumn: Int = 1, sep: String = "\t", limitSplit:Boolean=true,splitLimit: Int = 2): Map[String, String] = {
-    list.map(l => { val arr = (if(limitSplit)l.split(sep, splitLimit) else l.split(sep)); arr(keyColumn) -> arr(valueColumn) }).toMap
+
+  def tMap(list: List[String], keyColumn: Int = 0, valueColumn: Int = 1, sep: String = "\t", limitSplit: Boolean = true, splitLimit: Int = 2): Map[String, String] = {
+    list.map(l => { val arr = (if (limitSplit) l.split(sep, splitLimit) else l.split(sep)); arr(keyColumn) -> arr(valueColumn) }).toMap
   }
 
   implicit def toLeft[String, File](left: String): Either[String, File] = Left(left)
@@ -38,12 +47,12 @@ trait Lines {
    *
    */
   def tLines(file: Either[String, File], skipComments: Boolean = true, skipBlank: Boolean = true): List[String] = {
-    val ff= file.fold(new File(_), identity)
-    if(!ff.exists()){
-      var parent=ff
-      while(parent != null && !parent.exists()){
-        System.err.println("Invalid path: "+parent)
-        parent=parent.getParentFile()
+    val ff = file.fold(new File(_), identity)
+    if (!ff.exists()) {
+      var parent = ff
+      while (parent != null && !parent.exists()) {
+        System.err.println("Invalid path: " + parent)
+        parent = parent.getParentFile()
       }
     }
     Source.fromFile(ff).getLines.filterNot(f => skipComments && f.startsWith("#")).filterNot(f => skipBlank && f.trim.size == 0).toList
