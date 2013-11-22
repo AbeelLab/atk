@@ -22,6 +22,10 @@ import java.io.File
  * @author Thomas Abeel
  */
 trait Lines {
+  def tColumn(column:Int,list:List[String], sep: String = "\t")={
+    list.map(_.split(sep)(column))
+  }
+  
   def tMap(list: List[String], keyColumn: Int = 0, valueColumn: Int = 1, sep: String = "\t", limitSplit:Boolean=true,splitLimit: Int = 2): Map[String, String] = {
     list.map(l => { val arr = (if(limitSplit)l.split(sep, splitLimit) else l.split(sep)); arr(keyColumn) -> arr(valueColumn) }).toMap
   }
