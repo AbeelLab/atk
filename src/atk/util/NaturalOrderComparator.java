@@ -39,14 +39,16 @@ import java.util.List;
  */
 public final class NaturalOrderComparator implements Comparator<String> {
 
-	public static final Comparator<String> NUMERICAL_ORDER = new NaturalOrderComparator();
+	public static final Comparator<String> NUMERICAL_ORDER = new NaturalOrderComparator(false);
+	public static final Comparator<String> NUMERICAL_ORDER_IGNORE_CASE = new NaturalOrderComparator(true);
+	private boolean ignoreCase;
 	
 
-	private NaturalOrderComparator() {
-		// no-arg constructor
+	private NaturalOrderComparator(boolean ignoreCase) {
+		this.ignoreCase=ignoreCase;
 	}
 
-	int compareRight(String a, String b) {
+	private int compareRight(String a, String b) {
 		int bias = 0;
 		int ia = 0;
 		int ib = 0;
@@ -78,10 +80,12 @@ public final class NaturalOrderComparator implements Comparator<String> {
 		}
 	}
 
-	public int compare(String o1, String o2) {
-		String a = o1.toString();
-		String b = o2.toString();
-
+	public int compare(String a, String b) {
+		if(ignoreCase){
+			a=a.toLowerCase();
+			b=b.toLowerCase();
+		}
+		
 		int ia = 0, ib = 0;
 		int nza = 0, nzb = 0;
 		char ca, cb;
@@ -141,7 +145,7 @@ public final class NaturalOrderComparator implements Comparator<String> {
 		}
 	}
 
-	static char charAt(String s, int i) {
+	private static char charAt(String s, int i) {
 		if (i >= s.length()) {
 			return 0;
 		} else {
