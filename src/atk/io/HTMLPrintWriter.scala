@@ -30,7 +30,16 @@ class HTMLPrintWriter(str: String) extends PrintWriter(str: String) {
     println("<tr><th>" + row.replaceAll("\t", "</th><th>") + "</th></tr>")
   }
   
+   @Deprecated
   def wrapBold(str:String)="<b>"+str+"</b>"
+  
+  def b(str:String)=tag(str,"b")
+  
+  def i(str:String)=tag(str,"i")
+  
+  def td(str:String)=tag(str,"td")
+  
+  def tr(str:String)=tag(str,"tr")
   
   
 }
