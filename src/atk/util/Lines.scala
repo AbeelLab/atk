@@ -43,10 +43,7 @@ trait Lines {
 
   implicit def toRight[String, File](right: File): Either[String, File] = Right(right)
 
-  /**
-   *
-   */
-  def tLines(file: Either[String, File], skipComments: Boolean = true, skipBlank: Boolean = true): List[String] = {
+  def tLinesIterator(file: Either[String, File], skipComments: Boolean = true, skipBlank: Boolean = true): Iterator[String] = {
     val ff = file.fold(new File(_), identity)
     if (!ff.exists()) {
       var parent = ff
@@ -55,6 +52,12 @@ trait Lines {
         parent = parent.getParentFile()
       }
     }
-    Source.fromFile(ff).getLines.filterNot(f => skipComments && f.startsWith("#")).filterNot(f => skipBlank && f.trim.size == 0).toList
+    Source.fromFile(ff).getLines.filterNot(f => skipComments && f.startsWith("#")).filterNot(f => skipBlank && f.trim.size == 0)
+  }
+  /**
+   *
+   */
+  def tLines(file: Either[String, File], skipComments: Boolean = true, skipBlank: Boolean = true): List[String] = {
+    tLinesIterator(file, skipComments, skipBlank).toList
   }
 }
