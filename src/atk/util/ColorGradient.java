@@ -22,47 +22,22 @@ public class ColorGradient {
 	/**
 	 * Default 512 step four color gradient (red, yellow, green, blue)
 	 */
-	public static ColorGradient fourColorGradient = null;
+	public static ColorGradient rainbowGradient = new ColorGradient(512, Color.red, Color.yellow, Color.green, Color.blue);
 
 	/**
 	 * Default 512 step two color gradient (red, green)
 	 */
-	public static ColorGradient redGreenColorGradient = null;
+	public static ColorGradient redGreenColorGradient = new ColorGradient(512, Color.green, Color.red);
 
 	/**
 	 * Default 512 step four color gradient (yellow, blue);
 	 */
-	public static ColorGradient yellowBlueGradient = null;
-	
+	public static ColorGradient yellowBlueGradient = new ColorGradient(512, Color.yellow, Color.blue);
+
 	/**
 	 * Default 512 step four color gradient (white, black);
 	 */
-	public static ColorGradient whiteBlackGradient = null;
-
-	static {
-		fourColorGradient = new ColorGradient();
-		fourColorGradient.addPoint(Color.red);
-		fourColorGradient.addPoint(Color.yellow);
-		fourColorGradient.addPoint(Color.green);
-		fourColorGradient.addPoint(Color.blue);
-		fourColorGradient.createGradient(512);
-
-		redGreenColorGradient = new ColorGradient();
-		redGreenColorGradient.addPoint(Color.green);
-		redGreenColorGradient.addPoint(Color.red);
-		redGreenColorGradient.createGradient(512);
-
-		yellowBlueGradient = new ColorGradient();
-		yellowBlueGradient.addPoint(Color.yellow);
-		yellowBlueGradient.addPoint(Color.blue);
-		yellowBlueGradient.createGradient(512);
-		
-		whiteBlackGradient = new ColorGradient();
-		whiteBlackGradient.addPoint(Color.WHITE);
-		whiteBlackGradient.addPoint(Color.BLACK);
-		whiteBlackGradient.createGradient(512);
-
-	}
+	public static ColorGradient whiteBlackGradient = new ColorGradient(512, Color.white, Color.black);
 
 	private List<Color> crGradientPoints = new ArrayList<Color>();
 	private List<Color> crGradient;
@@ -77,24 +52,22 @@ public class ColorGradient {
 		crGradientPoints.add(gradientColour);
 	}
 
-	/**
-	 * Creates a 512 step 2 color gradient with the supplied start and end
-	 * colors.
-	 * 
-	 * @param start
-	 *            starting color
-	 * @param end
-	 *            ending color
-	 * @return a gradient between the two colors
-	 */
-	public static ColorGradient createTwoColor(Color start, Color end) {
-		ColorGradient out = new ColorGradient();
-		out.addPoint(start);
-		out.addPoint(end);
-		out.createGradient(512);
-		return out;
+	public ColorGradient() {
+
 	}
 
+	public ColorGradient(Color start, Color end) {
+		this(512, start, end);
+	}
+
+	public ColorGradient(int steps, Color... colors) {
+		for (Color c : colors) {
+			addPoint(c);
+		}
+		createGradient(steps);
+	}
+
+	
 	/**
 	 * Calculate the RGB deltas between two different color values and over a
 	 * given number of steps. <code>createGradient</code> uses this function to
@@ -174,8 +147,9 @@ public class ColorGradient {
 	public Color getColor(int i) {
 		return i >= crGradient.size() ? crGradient.get(crGradient.size() - 1) : crGradient.get(i);
 	}
+
 	public Color getColor(double s) {
-		return getColor((int)(s*crGradient.size()));
+		return getColor((int) (s * crGradient.size()));
 	}
 
 	/**
@@ -219,5 +193,4 @@ public class ColorGradient {
 		}
 	}
 
-	
 }
