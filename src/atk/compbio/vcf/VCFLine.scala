@@ -85,6 +85,8 @@ class VCFLine(val line: String) {
   lazy val blankFilter = filter.equals(".")
 
   lazy val pass = filter.equals("PASS")
+  
+  lazy val passOrUnfiltered=pass || filter.equals(".")
 
   def filter = if (arr.length > 6) arr(6) else "."
 
