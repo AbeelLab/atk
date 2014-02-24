@@ -91,7 +91,7 @@ object Histogram extends Tool{
 		}
 		dcd.addSeries("series", arr);
 
-		val w =3// (arr(0)(0) - arr(0)(1))/3
+		val w =(arr(0)(0) - arr(0)(1))/1.1
 
 		val chart = ChartFactory.createXYBarChart(null, config.x, false, config.y, new XYBarDataset(dcd, w),
 				PlotOrientation.VERTICAL, false, false, false);
