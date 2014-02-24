@@ -14,7 +14,7 @@
 
     <property
         name="src"
-        value="src:gpl/src:bsd/src" />
+        value="src:gpl/src:bsd/src:tools/src" />
 
     <property
         name="project"
