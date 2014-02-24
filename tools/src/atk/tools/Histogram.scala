@@ -61,7 +61,8 @@ object Histogram extends Tool{
 		println("Q3="+q3)
 //		println("Min=" + ds.getMin() + "\tMax=" + top + "\t" + data.length+"\t"+h);
 		println("h: "+h)
-		val range=(ds.getMax() - ds.getMin()) / h
+//		val range=(ds.getMax() - ds.getMin()) / h
+		val range=h
 		println("range= "+range)
 		val binned=data.groupBy(g=>(g/range).toInt).mapValues(_.size).map(f=>(f._1*range,f._2.toDouble/data.size))
 		
