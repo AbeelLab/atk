@@ -54,9 +54,11 @@ object Histogram extends Tool{
 		val q1=ds.getPercentile(25)
 		val q3=ds.getPercentile(75)
 		/* Freedman-Diaconis rule */
-		val h=2*(q3-q1)*Math.pow(data.length, -1/3)
+		val h=2.0*(q3-q1)*Math.pow(data.length, -1.0/3)
 		// double bottom=0;
-		val top = ds.getMax();
+		
+		println("n="+data.length)
+		println("pow="+Math.pow(data.length, -1/3))
 		println("Q1="+q1)
 		println("Q3="+q3)
 //		println("Min=" + ds.getMin() + "\tMax=" + top + "\t" + data.length+"\t"+h);
