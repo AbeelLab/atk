@@ -3,8 +3,10 @@
     name="ATK"
     basedir="."
     default="dist" >
-
-    <property
+	<property name="manifest.mainClass" value="atk.tools.ATKConsole" />
+	
+	
+	<property
         name="version"
         value="development" />
 
@@ -20,6 +22,24 @@
         name="project"
         value="atk" />
 
+	<fileset id="jarfiles" dir=".">
+
+			<include name="lib/ajt-*.jar" />
+
+			<include name="lib/commons-io-*.jar" />
+			<include name="lib/commons-math3-*.jar" />
+
+			
+		
+			<include name="lib/jcommon-*.jar" />
+			<include name="lib/jfreechart-*.jar" />
+		
+		
+
+			<include name="lib_compile/scala-library.jar" />
+		</fileset>
+
+	
     <property
         name="dist"
         value="${project}-${version}" />
@@ -28,6 +48,28 @@
         name="jar"
         value="${project}-${version}.jar" />
 
+
+	<path id="build.classpath">
+
+		<fileset refid="jarfiles" />
+	</path>
+	
+
+	<pathconvert pathsep=" " property="manifest.classpath">
+
+		<path refid="build.classpath" />
+
+		<mapper>
+
+			<chainedmapper>
+
+				<flattenmapper />
+
+				<globmapper from="*.jar" to="*.jar" />
+			</chainedmapper>
+		</mapper>
+	</pathconvert>
+	
     <target name="dist" >
 
         <taskdef resource="scala/tools/ant/antlib.xml" >
@@ -120,6 +162,13 @@
         <jar
             basedir="${build}"
             destfile="${dist}/${jar}" >
+        	<manifest>
+
+        					<attribute name="Main-Class" value="${manifest.mainClass}" />
+
+        					<attribute name="Class-Path" value="${manifest.classpath}" />
+        				</manifest>
+        	
         </jar>
 
         <zip
