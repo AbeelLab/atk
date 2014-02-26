@@ -24,6 +24,10 @@ import java.util.TimeZone
 import java.text.NumberFormat
 import java.util.Locale
 
+object Tools extends Tool{
+  
+}
+
 /**
  * Utility methods to create tools
  *
