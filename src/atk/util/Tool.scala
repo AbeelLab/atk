@@ -38,7 +38,7 @@ trait Tool extends Lines {
   val nfP = NumberFormat.getPercentInstance(Locale.US)
   nfP.setMaximumFractionDigits(2)
 
-  val nf = NumberFormat.getPercentInstance(Locale.US)
+  val nf = NumberFormat.getInstance(Locale.US)
   nf.setMaximumFractionDigits(2)
   
   
