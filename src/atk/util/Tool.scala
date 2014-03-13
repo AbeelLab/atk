@@ -41,7 +41,7 @@ trait Tool extends Lines {
   val nf = NumberFormat.getInstance(Locale.US)
   nf.setMaximumFractionDigits(2)
   
-  
+  lazy val naturalOrdering=Ordering.comparatorToOrdering(NaturalOrderComparator.NUMERICAL_ORDER_IGNORE_CASE)
   private var logger: PrintWriter = null;
 
   private val timestampFormat: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss-SSS")
