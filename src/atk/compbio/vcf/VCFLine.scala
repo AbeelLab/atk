@@ -45,7 +45,7 @@ class VCFLine(val line: String) {
 
   lazy val refLength = ref.length()
   lazy val altLength = alt.length()
-
+lazy val diff = refLength - altLength
   lazy val variation: Variation = {
     if(alt.equals(".")){
       new Match
@@ -61,7 +61,7 @@ class VCFLine(val line: String) {
     } else {
       assume(ref.length() > 0 && alt.length() > 0)
       if (ref.length() == 1 || alt.length() == 1) {
-        val diff = ref.length() - alt.length()
+        
         //if (ref.length() > alt.length())
         if (diff > 1)
           new LongDeletion

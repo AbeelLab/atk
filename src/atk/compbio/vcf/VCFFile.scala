@@ -8,7 +8,7 @@ import java.io.File
 object VCFFile {
 
   def apply(path: File): Iterator[VCFLine] = {
-    Source.fromFile(path).getLines.filterNot(_.startsWith("#")).map(new VCFLine(_))
+    Source.fromFile(path).getLines.filterNot(_.startsWith("#")).filterNot(_.trim().length()==0).map(new VCFLine(_))
   }
 
   def apply(path: String): Iterator[VCFLine] = {
