@@ -9,7 +9,14 @@ import java.awt.Color
  */
 object ColorPalette {
 
-  private val colors = List(new Color(230, 159, 0), new Color(86, 180, 233), new Color(0, 158, 115), new Color(240, 228, 66), new Color(0, 114, 178), new Color(213, 94, 0), new Color(204, 121, 167),Color.GRAY,Color.LIGHT_GRAY)
+  private val colors = List(new Color(230, 159, 0),//orange 
+      new Color(86, 180, 233),//sky blue
+      new Color(0, 158, 115), //bluish green
+      new Color(240, 228, 66), //yellow
+      new Color(0, 114, 178), //blue
+      new Color(213, 94, 0), //vermillion
+      new Color(204, 121, 167),//reddish purple
+      Color.GRAY,Color.LIGHT_GRAY)
 
   def apply(n: Int): Color = {
     colors(n % colors.length)
