@@ -22,10 +22,23 @@ import java.io.File
  * @author Thomas Abeel
  */
 trait Lines {
-  def tColumns(columns: List[Int], list: List[String], sep: String = "\t") = {
+
+  
+ 
+  
+  @Deprecated
+  def tColumns(columns: List[Int], list: List[String]): List[List[String]] = {
+    tColumns(list, columns)
+
+  }
+
+  def tColumns(list: List[String], columns: List[Int] = null, sep: String = "\t") = {
     list.map(line => {
       val arr = line.split(sep)
-      columns.map(arr(_))
+      if (columns != null)
+        columns.map(arr(_))
+      else
+        arr.toList
 
     })
 
