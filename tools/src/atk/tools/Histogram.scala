@@ -20,7 +20,7 @@ import be.abeel.graphics.GraphicsFileExport
 import be.abeel.jfreechart.JFreeChartWrapper
 
 object Histogram extends Tool{
-  case class Config(val input: File = null, val outputPrefix: String = "histogram",val column:Int=0, val bin:Int=1, val x:String = "X-axis", val y:String ="Y-axis")
+  case class Config(val input: File = null, val outputPrefix: String = "histogram",val column:Int=0, val bin:Int=1, val x:String = "X-axis", val y:String ="Y-axis", val log:Boolean=false)
 
   def main(args: Array[String]): Unit = {
     
@@ -30,7 +30,7 @@ object Histogram extends Tool{
       opt[String]('x',"x-label") action { (x, c) => c.copy(x = x) } text ("X-axis label")
       opt[String]('y',"y-label") action { (x, c) => c.copy(y = x) } text ("Y-axis label")
       opt[Int]('c', "column") action { (x, c) => c.copy(column = x) } text ("Column from which to extract values. Default = 0")
-
+      opt[Unit]("log")action{(x,c)=>c.copy(log=true)}text ("Take log of values. Default = false")
     }
     parser.parse(args, Config()) map { config =>
       histo(config)
@@ -40,7 +40,13 @@ object Histogram extends Tool{
   
   def histo(config:Config){
     assume(config.input.exists(),"Input file does not exist: "+config.input)
-    val values=tLines(config.input).map(_.split("\t")(config.column).toDouble)
+    val values=tLines(config.input).map{f=>
+      val v=f.split("\t")(config.column).toDouble
+      if(config.log)
+        math.log10(v)
+      else 
+        v
+    }
     
     val bins=binbin(values)
     plot(bins,config)
