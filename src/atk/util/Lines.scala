@@ -54,7 +54,8 @@ trait Lines {
         if (limitSplit)
           l.split(sep, List(splitLimit, keyColumn + 1, valueColumn + 1).max)
         else
-          l.split(sep)); arr(keyColumn) -> arr(valueColumn)
+          l.split(sep)); 
+      arr(keyColumn).trim -> arr(valueColumn).trim
     }).toMap
   }
 
