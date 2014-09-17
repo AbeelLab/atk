@@ -30,7 +30,7 @@ case class LongInsertion extends Insertion with LP
 
 class VCFLine(val line: String) {
 
-  private lazy val arr = line.split("\t")
+  lazy val arr = line.split("\t")
 
   override def toString() = line //arr.mkString("\t")
 
