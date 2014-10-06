@@ -57,7 +57,7 @@ trait Lines {
           l.split(sep)); 
       assume(keyColumn<arr.size, "Key column ("+keyColumn+") out of range: "+arr.mkString(","))
       assume(valueColumn<arr.size, "Value column ("+valueColumn+") out of range: "+arr.mkString(","))
-      arr(keyColumn).trim -> arr(valueColumn).trim
+      arr(keyColumn) -> arr(valueColumn)
     }).toMap
   }
 
