@@ -82,4 +82,8 @@ trait Lines {
   def tLines(file: Either[String, File], skipComments: Boolean = true, skipBlank: Boolean = true): List[String] = {
     tLinesIterator(file, skipComments, skipBlank).toList
   }
+  
+  def tBlob(file: Either[String, File], skipComments: Boolean = true, skipBlank: Boolean = true): String = {
+    tLines(file,skipComments,skipBlank).mkString("\n")
+  }
 }
