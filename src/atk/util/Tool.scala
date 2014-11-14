@@ -36,7 +36,7 @@ object Tool extends Tool{
 trait Tool extends Lines {
 
   
-  val version="There is no version available for this tool"
+  val version="There is no version information available for this tool"
     
   val nfP = NumberFormat.getPercentInstance(Locale.US)
   nfP.setMaximumFractionDigits(2)
