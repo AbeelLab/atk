@@ -85,7 +85,9 @@ object ColorTools {
     } else if (colorString.contains(",")) {
       val arr = colorString.split(",");
       new Color(Integer.parseInt(arr(0)), Integer.parseInt(arr(1)), Integer.parseInt(arr(2)));
-    } else {
+    } else if(colorString.startsWith("0x")){
+      Color.decode(colorString)
+    }else{
       // if a color name is given, see if a Color constant is
       // defined, otherwise use gray.
       val colorField = classOf[Color].getDeclaredField(colorString);
