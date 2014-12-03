@@ -11,11 +11,12 @@ import java.io.PrintWriter
 object URLCache {
 
   /**
-   *  Older than a week
+   *  Older than a month
    */
   def old(time: Long) = {
-    (System.currentTimeMillis() - time) > (1000 * 60 * 60 * 24 * 7)
+    (System.currentTimeMillis() - time) > (1000 * 60 * 60 * 24 * 30)
   }
+  var lastQuery = System.currentTimeMillis()
   def query(url: String): List[String] = {
 
     val hash = MD5Tools.md5(url)
@@ -25,6 +26,11 @@ object URLCache {
     if (!cached.exists() || cached.length() == 0 || old(cached.lastModified())) {
 
       //    println(hmac)
+	/* Wait at least 10 seconds between queries */
+      while (System.currentTimeMillis() - lastQuery < 10 * 1000) {
+        Thread.sleep(1000)
+      }
+      lastQuery = System.currentTimeMillis()
 
       val u = new URL(url);
       val conn = u.openConnection();
