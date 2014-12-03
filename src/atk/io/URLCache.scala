@@ -39,7 +39,7 @@ object URLCache {
         val conn = u.openConnection();
         val lines = Source.fromInputStream(conn.getInputStream()).getLines.toList
         
-        if (!lines.contains("Timed out")) {
+        if (!lines.mkString(" ").contains("Timed out")) {
           val pw = new PrintWriter(cached)
           pw.println(lines.mkString("\n"))
           pw.close
