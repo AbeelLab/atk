@@ -100,7 +100,7 @@ trait Tool extends Lines {
     "# Please contact Thomas Abeel for problems or questions:\n#\ttabeel@broadinstitute.org\n#\tt.abeel@tudelft.nl\n#\n"+
     "# Configuration summary: \n#\t " + "Current date and time: " + new Date() + "\n#\t " + "Number of processors: " + Integer.toString(Runtime.getRuntime().availableProcessors()) + "\n#\t " + "Free memory :" + Runtime.getRuntime().freeMemory() + "\n#\t " + "Max memory: " + Runtime.getRuntime().maxMemory() + "\n#\t " + "Total JVM: " + Runtime.getRuntime().totalMemory() + "\n#\t " + "OS: " + ManagementFactory.getOperatingSystemMXBean().getName() + " " + ManagementFactory.getOperatingSystemMXBean().getVersion() + "\n#\t " + "Architecture: " + ManagementFactory.getOperatingSystemMXBean().getArch() + "\n#\t " + "JVM version: " + System.getProperty("java.version")+"\n#\n"+
     "# Description: \n" +
-    "#     "+description.split("\n").mkString("\n#     ")
+    "#     "+description.split("\n").mkString("\n#     ")+
     "#\n"+
     "# Detailed version information: \n" +
     "#     "+version.split("\n").mkString("\n#     ")
