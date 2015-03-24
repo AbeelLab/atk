@@ -11,11 +11,14 @@ import java.util.Date
  */
 object URLCache {
 
+  
+  var oldLimit:Long=(1000L * 60 * 60 * 24 * 30)
+  var queryWait:Long=15 * 1000
   /**
    *  Older than a month
    */
   def old(time: Long) = {
-	  (System.currentTimeMillis() - time) > (1000L * 60 * 60 * 24 * 30)
+	  (System.currentTimeMillis() - time) > oldLimit
   }
   var lastQuery = System.currentTimeMillis()
   def query(url: String): List[String] = {
@@ -31,8 +34,8 @@ object URLCache {
       cached.delete()
       while (!cached.exists()) {
         /* Wait at least 15 seconds between queries */
-        while (System.currentTimeMillis() - lastQuery < 15 * 1000) {
-          Thread.sleep(1000)
+        while (System.currentTimeMillis() - lastQuery < queryWait) {
+          Thread.sleep(100)
         }
         lastQuery = System.currentTimeMillis()
 
