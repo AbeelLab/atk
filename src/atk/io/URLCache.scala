@@ -11,25 +11,29 @@ import java.util.Date
  */
 object URLCache {
 
-  
-  var oldLimit:Long=(1000L * 60 * 60 * 24 * 30)
-  var queryWait:Long=15 * 1000
+  var debug = false
+  var oldLimit: Long = (1000L * 60 * 60 * 24 * 30)
+  var queryWait: Long = 15 * 1000
   /**
    *  Older than a month
    */
   def old(time: Long) = {
-	  (System.currentTimeMillis() - time) > oldLimit
+    (System.currentTimeMillis() - time) > oldLimit
   }
   var lastQuery = System.currentTimeMillis()
   def query(url: String): List[String] = {
+
+    if (debug)
+      println("cache:query  " + url)
 
     val hash = MD5Tools.md5(url)
 
     val cached = new File(".url-cache/" + hash + ".blob")
     cached.getParentFile().mkdirs()
-    
-    if (!cached.exists() || cached.length() == 0 || old(cached.lastModified())) {
 
+    if (!cached.exists() || cached.length() == 0 || old(cached.lastModified())) {
+      if (debug)
+        println("cache:retrieve - "+hash)
       cached.delete()
       while (!cached.exists()) {
         /* Wait at least 15 seconds between queries */
@@ -40,8 +44,8 @@ object URLCache {
 
         val u = new URL(url);
         val conn = u.openConnection();
-        val lines = Source.fromInputStream(conn.getInputStream()).getLines.toList
-        
+        val lines = Source.fromInputStream(conn.getInputStream())("UTF-8").getLines.toList
+
         if (!lines.mkString(" ").contains("Timed out")) {
           val pw = new PrintWriter(cached)
           pw.println(lines.mkString("\n"))
