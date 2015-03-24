@@ -27,8 +27,7 @@ object URLCache {
 
     val cached = new File(".url-cache/" + hash + ".blob")
     cached.getParentFile().mkdirs()
-    println(cached.exists()+"\t"+cached.length()+"\t"+old(cached.lastModified()))
-
+    
     if (!cached.exists() || cached.length() == 0 || old(cached.lastModified())) {
 
       cached.delete()
