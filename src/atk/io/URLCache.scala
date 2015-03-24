@@ -5,6 +5,7 @@ import java.io.File
 import java.net.URL
 import scala.io.Source
 import java.io.PrintWriter
+import java.util.Date
 /**
  * Simple object to cache URL reads
  */
@@ -14,7 +15,7 @@ object URLCache {
    *  Older than a month
    */
   def old(time: Long) = {
-    (System.currentTimeMillis() - time) > (1000 * 60 * 60 * 24 * 30)
+	  (System.currentTimeMillis() - time) > (1000L * 60 * 60 * 24 * 30)
   }
   var lastQuery = System.currentTimeMillis()
   def query(url: String): List[String] = {
@@ -23,9 +24,9 @@ object URLCache {
 
     val cached = new File(".url-cache/" + hash + ".blob")
     cached.getParentFile().mkdirs()
-    if (!cached.exists() || cached.length() == 0 || old(cached.lastModified())) {
+    println(cached.exists()+"\t"+cached.length()+"\t"+old(cached.lastModified()))
 
-      //    println(hmac)
+    if (!cached.exists() || cached.length() == 0 || old(cached.lastModified())) {
 
       cached.delete()
       while (!cached.exists()) {
