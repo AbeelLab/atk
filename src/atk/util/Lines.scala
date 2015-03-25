@@ -23,9 +23,6 @@ import java.io.File
  */
 trait Lines {
 
-  
- 
-  
   @Deprecated
   def tColumns(columns: List[Int], list: List[String]): List[List[String]] = {
     tColumns(list, columns)
@@ -54,9 +51,9 @@ trait Lines {
         if (limitSplit)
           l.split(sep, List(splitLimit, keyColumn + 1, valueColumn + 1).max)
         else
-          l.split(sep)); 
-      assume(keyColumn<arr.size, "Key column ("+keyColumn+") out of range: "+arr.mkString(","))
-      assume(valueColumn<arr.size, "Value column ("+valueColumn+") out of range: "+arr.mkString(","))
+          l.split(sep));
+      assume(keyColumn < arr.size, "Key column (" + keyColumn + ") out of range: " + arr.mkString(","))
+      assume(valueColumn < arr.size, "Value column (" + valueColumn + ") out of range: " + arr.mkString(","))
       arr(keyColumn) -> arr(valueColumn)
     }).toMap
   }
@@ -65,7 +62,12 @@ trait Lines {
 
   implicit def toRight[String, File](right: File): Either[String, File] = Right(right)
 
-  def tLinesIterator(file: Either[String, File], skipComments: Boolean = true, skipBlank: Boolean = true): Iterator[String] = {
+  @Deprecated
+  def tLinesIterator(file: Either[String, File], skipComments: Boolean = true, skipBlank: Boolean = true): Iterator[String]= {
+    tIterator(file, skipComments, skipBlank)._1
+  }
+
+  def tIterator(file: Either[String, File], skipComments: Boolean = true, skipBlank: Boolean = true): (Iterator[String], Source) = {
     val ff = file.fold(new File(_), identity)
     if (!ff.exists()) {
       var parent = ff
@@ -74,16 +76,20 @@ trait Lines {
         parent = parent.getParentFile()
       }
     }
-    Source.fromFile(ff).getLines.filterNot(f => skipComments && f.startsWith("#")).filterNot(f => skipBlank && f.trim.size == 0)
+    val src = Source.fromFile(ff)
+    src.getLines.filterNot(f => skipComments && f.startsWith("#")).filterNot(f => skipBlank && f.trim.size == 0) -> src
   }
   /**
    *
    */
   def tLines(file: Either[String, File], skipComments: Boolean = true, skipBlank: Boolean = true): List[String] = {
-    tLinesIterator(file, skipComments, skipBlank).toList
+    val it=tIterator(file, skipComments, skipBlank)
+    val list=it._1.toList
+    it._2.close
+    list
   }
-  
+
   def tBlob(file: Either[String, File], skipComments: Boolean = true, skipBlank: Boolean = true): String = {
-    tLines(file,skipComments,skipBlank).mkString("\n")
+    tLines(file, skipComments, skipBlank).mkString("\n")
   }
 }
