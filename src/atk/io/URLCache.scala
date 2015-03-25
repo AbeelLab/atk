@@ -6,6 +6,9 @@ import java.net.URL
 import scala.io.Source
 import java.io.PrintWriter
 import java.util.Date
+import java.nio.charset.StandardCharsets
+import java.io.FileOutputStream
+import java.io.OutputStreamWriter
 /**
  * Simple object to cache URL reads
  */
@@ -44,10 +47,12 @@ object URLCache {
 
         val u = new URL(url);
         val conn = u.openConnection();
+        if(debug)
+        	println("cache:encoding - "+conn.getContentEncoding())
         val lines = Source.fromInputStream(conn.getInputStream())("UTF-8").getLines.toList
 
         if (!lines.mkString(" ").contains("Timed out")) {
-          val pw = new PrintWriter(cached)
+          val pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(cached), "UTF8"), true)
           pw.println(lines.mkString("\n"))
           pw.close
         }
