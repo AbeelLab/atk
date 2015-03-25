@@ -54,7 +54,7 @@ object URLCache {
 
       }
     }
-    Source.fromFile(cached).getLines.toList
+    Source.fromFile(cached)("UTF-8").getLines.toList
 
   }
 
