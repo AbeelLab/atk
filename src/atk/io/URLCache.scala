@@ -34,9 +34,11 @@ object URLCache {
     val cached = new File(".url-cache/" + hash + ".blob")
     cached.getParentFile().mkdirs()
 
+    if (debug)
+        println("cache:hash - "+hash)
+    
     if (!cached.exists() || cached.length() == 0 || old(cached.lastModified())) {
-      if (debug)
-        println("cache:retrieve - "+hash)
+      
       cached.delete()
       while (!cached.exists()) {
         /* Wait at least 15 seconds between queries */
