@@ -1,20 +1,24 @@
 package atk.compbio
 /**
  * Efficient compact implementation to start DNA strings
- * 
+ *
  * This implementation only supports ACGTN- in the DNA alphabet and will silently lose coding for other letters.
- * 
+ *
  */
 class DNAString(str: String) {
 
   val len = str.size
   def size = len
   def apply(i: Int) = get(i)
- 
 
+  private var hash: Long = 1
+  override def hashCode() = hash.toInt
+  def longHashCode=hash
+  
   private val bytes = Array.ofDim[Byte]((str.length() + 1) / 2)
 
   for (i <- 0 until len) {
+
     set(i, str.charAt(i));
   }
 
@@ -58,7 +62,12 @@ class DNAString(str: String) {
       mask <<= 4;
 
     var current = bytes(pos / 2).toInt;
+
+    hash += current
+    hash *= 8
+
     current &= mask;
+
     var newCurrent = current | coded;
     bytes(pos / 2) = newCurrent.toByte
   }
@@ -66,9 +75,9 @@ class DNAString(str: String) {
   /* Zero based getter for the sequence */
 
   def get(pos: Int): Char = {
-    if(pos<0||pos>=len)
-      throw new IndexOutOfBoundsException(pos+" is out of bounds")
-    
+    if (pos < 0 || pos >= len)
+      throw new IndexOutOfBoundsException(pos + " is out of bounds")
+
     var current = bytes(pos / 2).toInt;
     var mask = 15;
     if (pos % 2 == 1) {
