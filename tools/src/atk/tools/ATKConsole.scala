@@ -13,6 +13,7 @@ object ATKConsole {
         case "help" => listInstructions
         case "histogram" => Histogram.main(args.drop(1))
         case "string-replace" =>StringReplace.main(args.drop(1))
+        case "tree2list" => Tree2List.main(args.drop(1))
         case _ => listInstructions
       }
     }
@@ -22,8 +23,9 @@ object ATKConsole {
   def listInstructions() {
     println("Usage:java -jar atk.jar [instruction] [instruction options...]")
     println("Instructions:")
-    println("\thistogram\t\tCreate a histogram plot from data in file")
-    println("\tstring-replace\t\tReplace string with other from a key-value file")
+    println("\thistogram          Create a histogram plot from data in file")
+    println("\tstring-replace     Replace string with other from a key-value file")
+    println("\ttree2list          Converts nwk tree into list")
     println("\tlist\t\tShow help")
     println("\thelp\t\tShow help")
 
