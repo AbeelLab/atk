@@ -12,7 +12,7 @@ object StringReplace extends Tool {
 
   def main(args: Array[String]): Unit = {
 
-    val parser = new scopt.OptionParser[Config]("java -jar atk.jar histogram") {
+    val parser = new scopt.OptionParser[Config]("java -jar atk.jar string-replace") {
       opt[File]('i', "input") required () action { (x, c) => c.copy(input = x) } text ("Input file")
       opt[File]('r', "replace") required () action { (x, c) => c.copy(replace = x) } text ("Replace key value pairs file")
       opt[File]('o', "output") required () action { (x, c) => c.copy(output = x) } text ("Output file")
