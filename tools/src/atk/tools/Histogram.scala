@@ -38,7 +38,7 @@ object Histogram extends Tool {
     }
   }
 
-  def histo(config: HistogramConfig) {
+  private def histo(config: HistogramConfig) {
     assume(config.input.exists(), "Input file does not exist: " + config.input)
     val values = tLines(config.input).map { f =>
       val v = f.split("\t")(config.column).toDouble
@@ -82,7 +82,7 @@ object Histogram extends Tool {
     //		return bins;
   }
 
-  private def plot(values: List[Double],outputPrefix:String, x:String,y:String) {
+  def plot(values: List[Double],outputPrefix:String, x:String,y:String) {
     val input = binbin(values)
 
     val dcd = new DefaultXYDataset();
