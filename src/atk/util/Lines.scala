@@ -45,7 +45,7 @@ trait Lines {
     list.map(_.split(sep)(column))
   }
 
-  def tMap(list: List[String], keyColumn: Int = 0, valueColumn: Int = 1, sep: String = "\t", limitSplit: Boolean = true, splitLimit: Int = 2): Map[String, String] = {
+  def tMap(list: List[String], keyColumn: Int = 0, valueColumn: Int = 1, sep: String = "\t", limitSplit: Boolean = true, splitLimit: Int = 2, trim:Boolean=false): Map[String, String] = {
     list.map(l => {
       val arr = (
         if (limitSplit)
@@ -54,7 +54,10 @@ trait Lines {
           l.split(sep));
       assume(keyColumn < arr.size, "Key column (" + keyColumn + ") out of range: " + arr.mkString(","))
       assume(valueColumn < arr.size, "Value column (" + valueColumn + ") out of range: " + arr.mkString(","))
-      arr(keyColumn) -> arr(valueColumn)
+      if(trim)
+    	  arr(keyColumn) -> arr(valueColumn)
+      else 
+          arr(keyColumn).trim -> arr(valueColumn).trim
     }).toMap
   }
 
