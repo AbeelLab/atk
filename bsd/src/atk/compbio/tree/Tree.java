@@ -42,7 +42,6 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Vector;
@@ -59,10 +58,8 @@ import java.util.Vector;
 public class Tree {
 
 	
-	
-
 	/** The list of nodes of the tree indexed by their keys, indexed by key */
-	public ArrayList nodes;
+	public ArrayList<TreeNode> nodes;
 
 	/**
 	 * Most internal nodes dont have names. Do we assign a unique name to each
@@ -100,7 +97,7 @@ public class Tree {
 	public Tree(String path) throws FileNotFoundException {
 //		root = new TreeNode();
 		this.file=new File(path);
-		nodes = new ArrayList();
+		nodes = new ArrayList<TreeNode>();
 		TreeParser tp = new TreeParser(new BufferedReader(new FileReader(path)));
 		root=tp.tokenize(1000, "TestTree", null);
 		postProcess();
@@ -297,7 +294,7 @@ public class Tree {
 	private void preorderPostProcess() {
 		// munge names here, names become fully qualified, labels are what names
 		// were
-		final char separator = '/'; // separator between name fields
+//		final char separator = '/'; // separator between name fields
 		// arbitrary seen by users in search, no parsing on this is required
 		// later
 		int index = 0;
@@ -324,9 +321,9 @@ public class Tree {
 	 * 
 	 */
 	public void setUpNameLists() {
-		nodes = new ArrayList();
+		nodes = new ArrayList<TreeNode>();
 //		nodesByName = new HashMap();
-		final char separator = '/'; // separator between name fields
+//		final char separator = '/'; // separator between name fields
 		for (TreeNode n = root; n != null; n = n.preorderNext) {
 			n.label = n.name;
 			nodes.add(n);
@@ -384,14 +381,14 @@ public class Tree {
 	 *            Progress bar.
 	 */
 	private void linkLeaves() {
-		int counter = 0;
-		int percentage = 0;
+//		int counter = 0;
+//		int percentage = 0;
 		TreeNode pren = root.leftmostLeaf;
-		Vector leaves = new Vector();
+		Vector<TreeNode> leaves = new Vector<TreeNode>();
 		leaves.add(pren);
 		// pren.lindex = 0;
 		for (TreeNode n = pren.preorderNext; n != null; n = n.preorderNext) {
-			counter++;
+//			counter++;
 			if (n.isLeaf()) {
 				leaves.add(n);
 			}
@@ -433,29 +430,29 @@ public class Tree {
 		}
 	}
 
-	/**
-	 * Get the leaf associated with the given leaf index.
-	 * 
-	 * @param index
-	 *            A leaf index of interest.
-	 * @return The leaf node at the index, or null on error.
-	 * */
-	public TreeNode getLeaf(int index) {
-		// System.out.println("getting leaf: " + index );
-		return null;
-	}
+//	/**
+//	 * Get the leaf associated with the given leaf index.
+//	 * 
+//	 * @param index
+//	 *            A leaf index of interest.
+//	 * @return The leaf node at the index, or null on error.
+//	 * */
+//	public TreeNode getLeaf(int index) {
+//		// System.out.println("getting leaf: " + index );
+//		return null;
+//	}
 
-	/** Stub function */
-	public float getMinObjectValue() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/** Stub function */
-	public float getMaxObjectValue() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+//	/** Stub function */
+//	public float getMinObjectValue() {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+//
+//	/** Stub function */
+//	public float getMaxObjectValue() {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
 
 	/**
 	 * @return Returns the index number of this tree in the nexus file it was
@@ -465,13 +462,13 @@ public class Tree {
 		return nexusIndex;
 	}
 
-	/**
-	 * @param leafSplitAxis
-	 *            The leafSplitLine to set.
-	 */
-	// public void setLeafSplitAxis(StaticSplitAxis leafSplitAxis) {
-	// this.leafSplitAxis = leafSplitAxis;
-	// }
+//	/**
+//	 * @param leafSplitAxis
+//	 *            The leafSplitLine to set.
+//	 */
+//	// public void setLeafSplitAxis(StaticSplitAxis leafSplitAxis) {
+//	// this.leafSplitAxis = leafSplitAxis;
+//	// }
 
 	/**
 	 * Get the leaves under this node. Used for tree to tree comparison,
@@ -501,12 +498,12 @@ public class Tree {
 }
 
 /** Comparator class for Strings */
-class NameComparator implements Comparator {
+class NameComparator implements Comparator<TreeNode> {
 	/** collator object used for string comparison. */
 	Collator myCollator = Collator.getInstance(Locale.US);
 
 	/** String comparator, uses {@link Collator} comparator. */
-	public int compare(Object o1, Object o2) {
+	public int compare(TreeNode o1, TreeNode o2) {
 		String s1 = ((TreeNode) o1).getName();
 		String s2 = ((TreeNode) o2).getName();
 		return myCollator.compare(s1, s2);

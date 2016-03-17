@@ -37,7 +37,7 @@ package atk.compbio.tree;
 import java.util.*;
 
 /**
- * A class representing a node of a (phylognenetic) tree. The tree that this
+ * A class representing a node of a (phylogenetic) tree. The tree that this
  * node belongs to is of type Tree. Nodes have fields that store a pre- and
  * post-ordering.
  * 
@@ -47,7 +47,6 @@ import java.util.*;
  * @author Tamara Munzner, Li Zhang, Yunhong Zhou
  * @version 2.2
  * @see Tree
- * @see GridCell
  */
 public class TreeNode {
 
@@ -68,13 +67,13 @@ public class TreeNode {
 	// /** Height of font in font points used to draw the label. */
 	// private int fontSize;
 
-	/**
-	 * Score for a node in [0,1] that corresponds to the topological similarity
-	 * between two tree drawers.
-	 * 
-	 * @see TreePairs#getBestCorrNodeScore(Tree, TreeNode, Tree, int)
-	 */
-	private Double bcnScore;
+//	/**
+//	 * Score for a node in [0,1] that corresponds to the topological similarity
+//	 * between two tree drawers.
+//	 * 
+//	 * @see TreePairs#getBestCorrNodeScore(Tree, TreeNode, Tree, int)
+//	 */
+//	private Double bcnScore;
 
 	// /**
 	// * The offset of the point with respect to the cell. We only have
@@ -83,11 +82,11 @@ public class TreeNode {
 	// * add nodeOffsetR to the pointOffset[1], a fixed parameter set by
 	// * AccordionDrawer.
 	// */
-	/**
-	 * The last frame that had a computed {@link #midYPosition}, for caching.
-	 */
-	protected int computedFrame; // store frame midYPosition was last
-									// calculated (needed to place parents)
+//	/**
+//	 * The last frame that had a computed {@link #midYPosition}, for caching.
+//	 */
+//	protected int computedFrame; // store frame midYPosition was last
+//									// calculated (needed to place parents)
 
 	// /** Cached location (world-space) of the mid point in the vertical of a
 	// cell where the horizontal tree edge is drawn.
@@ -224,7 +223,7 @@ public class TreeNode {
 	 */
 	public TreeNode() {
 		children = new ArrayList<TreeNode>(2);
-		bcnScore = new Double(0.0);
+//		bcnScore = new Double(0.0);
 	}
 
 	/**
@@ -362,7 +361,7 @@ public class TreeNode {
 	 * 
 	 * @return First child of this internal node.
 	 */
-	protected TreeNode firstChild() {
+	private TreeNode firstChild() {
 		return (TreeNode) children.get(0);
 	}
 
@@ -371,7 +370,7 @@ public class TreeNode {
 	 * 
 	 * @return Last child of this internal node.
 	 */
-	public TreeNode lastChild() {
+	private TreeNode lastChild() {
 		return (TreeNode) children.get(children.size() - 1);
 	}
 
@@ -459,24 +458,24 @@ public class TreeNode {
 		return name + "(" + key + " @ " + height + ")";
 	}
 
-	/**
-	 * Set the {@link #bcnScore} for this node.
-	 * 
-	 * @param n
-	 *            New value of {@link #bcnScore}.
-	 */
-	public void setBcnScore(float n) {
-		bcnScore = new Double(n);
-	}
+//	/**
+//	 * Set the {@link #bcnScore} for this node.
+//	 * 
+//	 * @param n
+//	 *            New value of {@link #bcnScore}.
+//	 */
+//	public void setBcnScore(float n) {
+//		bcnScore = new Double(n);
+//	}
 
-	/**
-	 * Get the BCN score for this treenode.
-	 * 
-	 * @return Value of {@link #bcnScore} for this node.
-	 */
-	public Double getBcnScore() {
-		return bcnScore;
-	}
+//	/**
+//	 * Get the BCN score for this treenode.
+//	 * 
+//	 * @return Value of {@link #bcnScore} for this node.
+//	 */
+//	public Double getBcnScore() {
+//		return bcnScore;
+//	}
 
 	public double longestWeight() {
 		if (isLeaf())
