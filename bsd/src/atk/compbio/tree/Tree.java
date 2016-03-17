@@ -59,16 +59,16 @@ public class Tree {
 
 	
 	/** The list of nodes of the tree indexed by their keys, indexed by key */
-	public ArrayList<TreeNode> nodes;
+	private  ArrayList<TreeNode> nodes;
 
-	/**
-	 * Most internal nodes dont have names. Do we assign a unique name to each
-	 * of them? No! each node has a key and the key is unique for nodes.
-	 */
+//	/**
+//	 * Most internal nodes dont have names. Do we assign a unique name to each
+//	 * of them? No! each node has a key and the key is unique for nodes.
+//	 */
 //	private HashMap nodesByName;
 
-	/** key should be unique for each tree, set by object that creates trees */
-	private int key;
+//	/** key should be unique for each tree, set by object that creates trees */
+//	private int key;
 
 	/**
 	 * Leaf counter, for determining grid size, making arrays for tree
@@ -76,7 +76,7 @@ public class Tree {
 	 */
 	private int numLeaves = 0;
 
-	private File file;
+//	private File file;
 
 	// reference for array of leaves in SC.cullingObject
 	/**
@@ -86,9 +86,9 @@ public class Tree {
 	// private StaticSplitAxis leafSplitAxis;
 
 	
-	public File file(){
-		return file;
-	}
+//	public File file(){
+//		return file;
+//	}
 	/**
 	 * Default tree constructor. Nodes are created by parser and added in later.
 	 * @throws FileNotFoundException 
@@ -96,7 +96,7 @@ public class Tree {
 	 */
 	public Tree(String path) throws FileNotFoundException {
 //		root = new TreeNode();
-		this.file=new File(path);
+//		this.file=new File(path);
 		nodes = new ArrayList<TreeNode>();
 		TreeParser tp = new TreeParser(new BufferedReader(new FileReader(path)));
 		root=tp.tokenize(1000, "TestTree", null);
@@ -106,44 +106,44 @@ public class Tree {
 
 	
 
-	/**
-	 * Clean up method, called when the tree is deleted.
-	 * 
-	 * @see TreeNode#close()
-	 * 
-	 */
-	public void close() {
-		TreeNode pren = root.leftmostLeaf;
-		for (TreeNode n = pren.preorderNext; n != null; n = n.preorderNext) {
-			n.close();
-		}
-	}
-
-	/**
-	 * Calls to #close() when tree is deleted.
-	 */
-	protected void finalize() throws Throwable {
-
-		try {
-			close();
-		} finally {
-			super.finalize();
-		}
-	}
+//	/**
+//	 * Clean up method, called when the tree is deleted.
+//	 * 
+//	 * @see TreeNode#close()
+//	 * 
+//	 */
+//	public void close() {
+//		TreeNode pren = root.leftmostLeaf;
+//		for (TreeNode n = pren.preorderNext; n != null; n = n.preorderNext) {
+//			n.close();
+//		}
+//	}
+//
+//	/**
+//	 * Calls to #close() when tree is deleted.
+//	 */
+//	protected void finalize() throws Throwable {
+//
+//		try {
+//			close();
+//		} finally {
+//			super.finalize();
+//		}
+//	}
 
 	// /**
 	// * Returns the number of interior nodes in this tree. For debugging.
 	// * @return Total number of nodes minus the number of leaves.
 	// */
 	// private int getInteriorCount() { return nodes.size() - numLeaves;}
-	/**
-	 * Returns the node count, for internal and leaf nodes.
-	 * 
-	 * @return Size of the {@link #nodes} array, which contains all nodes.
-	 */
-	protected int getTotalNodeCount() {
-		return nodes.size();
-	}
+//	/**
+//	 * Returns the node count, for internal and leaf nodes.
+//	 * 
+//	 * @return Size of the {@link #nodes} array, which contains all nodes.
+//	 */
+//	private int getTotalNodeCount() {
+//		return nodes.size();
+//	}
 
 	/**
 	 * Returns the node indexed by the given key.
@@ -185,33 +185,33 @@ public class Tree {
 		return height;
 	}
 
-	/**
-	 * Mutator for key
-	 * 
-	 * @param i
-	 *            New value for {@link #key}.
-	 */
-	public void setKey(int i) {
-		key = i;
-	}
+//	/**
+//	 * Mutator for key
+//	 * 
+//	 * @param i
+//	 *            New value for {@link #key}.
+//	 */
+//	public void setKey(int i) {
+//		key = i;
+//	}
 
-	/**
-	 * Accessor for key.
-	 * 
-	 * @return Value of {@link #key}.
-	 */
-	public int getKey() {
-		return key;
-	}
+//	/**
+//	 * Accessor for key.
+//	 * 
+//	 * @return Value of {@link #key}.
+//	 */
+//	public int getKey() {
+//		return key;
+//	}
 
-	/**
-	 * File name accessor.
-	 * 
-	 * @return value of {@link #fileName}.
-	 */
-	public String getName() {
-		return fileName;
-	}
+//	/**
+//	 * File name accessor.
+//	 * 
+//	 * @return value of {@link #fileName}.
+//	 */
+//	public String getName() {
+//		return fileName;
+//	}
 
 	/**
 	 * Left most leaf accessor. This is the "min leaf"
@@ -223,23 +223,23 @@ public class Tree {
 		return root.leftmostLeaf;
 	}
 
-	/**
-	 * Root accessor.
-	 * 
-	 * @return Value of {@link #root}
-	 */
-	public TreeNode getRoot() {
-		return root;
-	}
+//	/**
+//	 * Root accessor.
+//	 * 
+//	 * @return Value of {@link #root}
+//	 */
+//	public TreeNode getRoot() {
+//		return root;
+//	}
+//
+//	public void setRootNode(TreeNode newRoot) {
+//		this.root = newRoot;
+//	}
 
-	public void setRootNode(TreeNode newRoot) {
-		this.root = newRoot;
-	}
-
-	/**
-	 * File name for this tree.
-	 */
-	private String fileName = null; // the filename
+//	/**
+//	 * File name for this tree.
+//	 */
+//	private String fileName = null; // the filename
 	/**
 	 * Index of tree in nexus file, if this tree is from a nexus file.
 	 */
@@ -250,15 +250,15 @@ public class Tree {
 	 */
 	public TreeNode root = null;
 
-	/**
-	 * Sets the file name. Copies the value for some reason.
-	 * 
-	 * @param tn
-	 *            New value for file name.
-	 */
-	public void setFileName(String tn) {
-		fileName = new String(tn);
-	}
+//	/**
+//	 * Sets the file name. Copies the value for some reason.
+//	 * 
+//	 * @param tn
+//	 *            New value for file name.
+//	 */
+//	public void setFileName(String tn) {
+//		fileName = new String(tn);
+//	}
 
 	/**
 	 * Returns the number of leaves in this tree.
@@ -300,7 +300,7 @@ public class Tree {
 		int index = 0;
 		height = 1;
 		for (TreeNode n = root; n != null; n = n.preorderNext) {
-			n.label = n.name;
+		
 			n.key = index++;
 			nodes.add(n);
 //			if (n.name != null && n.name.length() > 0) {
@@ -314,28 +314,28 @@ public class Tree {
 
 	}
 
-	/**
-	 * Traverse the tree and initialize the {@link #nodesByName} and
-	 * {@link #nodes} data structures. Used when modifying the names of nodes as
-	 * well as initialization.
-	 * 
-	 */
-	public void setUpNameLists() {
-		nodes = new ArrayList<TreeNode>();
-//		nodesByName = new HashMap();
-//		final char separator = '/'; // separator between name fields
-		for (TreeNode n = root; n != null; n = n.preorderNext) {
-			n.label = n.name;
-			nodes.add(n);
-//			if (n.name != null && n.name.length() > 0) {
-//				// don't put an empty string in the
-//				// hash table
-//				nodesByName.put(n.name, n);
-//			}
-			n.height = (null != n.parent) ? n.parent.height + 1 : 1;
-			height = (n.height > height) ? n.height : height;
-		}
-	}
+//	/**
+//	 * Traverse the tree and initialize the {@link #nodesByName} and
+//	 * {@link #nodes} data structures. Used when modifying the names of nodes as
+//	 * well as initialization.
+//	 * 
+//	 */
+//	public void setUpNameLists() {
+//		nodes = new ArrayList<TreeNode>();
+////		nodesByName = new HashMap();
+////		final char separator = '/'; // separator between name fields
+//		for (TreeNode n = root; n != null; n = n.preorderNext) {
+//			n.label = n.name;
+//			nodes.add(n);
+////			if (n.name != null && n.name.length() > 0) {
+////				// don't put an empty string in the
+////				// hash table
+////				nodesByName.put(n.name, n);
+////			}
+//			n.height = (null != n.parent) ? n.parent.height + 1 : 1;
+//			height = (n.height > height) ? n.height : height;
+//		}
+//	}
 
 	// /**
 	// * Wrapper for initiating {@link #linkSubtreeNodesInPreorder(TreeNode)}
@@ -415,7 +415,7 @@ public class Tree {
 				// marked as
 				// different since numbering convention doesn't string match the
 				// original node name)
-				curr.setName(name + " " + index); // sb.toString());
+				curr.name=name + " " + index; // sb.toString());
 //				nodesByName.put(name + " " + index, curr);// sortedLeafArray[i].getName(),
 															// sortedLeafArray[i]);
 															// // add the node

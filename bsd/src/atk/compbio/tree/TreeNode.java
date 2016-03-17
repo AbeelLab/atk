@@ -37,8 +37,8 @@ package atk.compbio.tree;
 import java.util.*;
 
 /**
- * A class representing a node of a (phylogenetic) tree. The tree that this
- * node belongs to is of type Tree. Nodes have fields that store a pre- and
+ * A class representing a node of a (phylogenetic) tree. The tree that this node
+ * belongs to is of type Tree. Nodes have fields that store a pre- and
  * post-ordering.
  * 
  * A TreeNode has a list of children, a unique key, a leftmostleaf and a
@@ -67,13 +67,14 @@ public class TreeNode {
 	// /** Height of font in font points used to draw the label. */
 	// private int fontSize;
 
-//	/**
-//	 * Score for a node in [0,1] that corresponds to the topological similarity
-//	 * between two tree drawers.
-//	 * 
-//	 * @see TreePairs#getBestCorrNodeScore(Tree, TreeNode, Tree, int)
-//	 */
-//	private Double bcnScore;
+	// /**
+	// * Score for a node in [0,1] that corresponds to the topological
+	// similarity
+	// * between two tree drawers.
+	// *
+	// * @see TreePairs#getBestCorrNodeScore(Tree, TreeNode, Tree, int)
+	// */
+	// private Double bcnScore;
 
 	// /**
 	// * The offset of the point with respect to the cell. We only have
@@ -82,11 +83,11 @@ public class TreeNode {
 	// * add nodeOffsetR to the pointOffset[1], a fixed parameter set by
 	// * AccordionDrawer.
 	// */
-//	/**
-//	 * The last frame that had a computed {@link #midYPosition}, for caching.
-//	 */
-//	protected int computedFrame; // store frame midYPosition was last
-//									// calculated (needed to place parents)
+	// /**
+	// * The last frame that had a computed {@link #midYPosition}, for caching.
+	// */
+	// protected int computedFrame; // store frame midYPosition was last
+	// // calculated (needed to place parents)
 
 	// /** Cached location (world-space) of the mid point in the vertical of a
 	// cell where the horizontal tree edge is drawn.
@@ -179,11 +180,11 @@ public class TreeNode {
 	 */
 	protected String name = ""; // the long form in fully qualified names
 
-	/**
-	 * The text that appears when the node is highlighted or has a name
-	 * displayed.
-	 */
-	public String label = ""; // always short form
+//	/**
+//	 * The text that appears when the node is highlighted or has a name
+//	 * displayed.
+//	 */
+//	public String label = ""; // always short form
 
 	/** Distance from this node to the root node. The root is at height 1. */
 	public int height;
@@ -222,40 +223,41 @@ public class TreeNode {
 	 * the tree; the parser uses this to create nodes attached to the root.
 	 */
 	public TreeNode() {
+
 		children = new ArrayList<TreeNode>(2);
-//		bcnScore = new Double(0.0);
+		// bcnScore = new Double(0.0);
 	}
 
-	/**
-	 * Clean this node of children.
-	 */
-	public void close() {
-		children.clear();
-	}
+	// /**
+	// * Clean this node of children.
+	// */
+	// public void close() {
+	// children.clear();
+	// }
+	//
+	// /**
+	// * Destroy this node. Runs {@link #close()}.
+	// */
+	// protected void finalize() throws Throwable {
+	//
+	// try {
+	// close();
+	// } finally {
+	// super.finalize();
+	// // System.out.println("finally clean treeNodes");
+	// }
+	// }
 
-	/**
-	 * Destroy this node. Runs {@link #close()}.
-	 */
-	protected void finalize() throws Throwable {
-
-		try {
-			close();
-		} finally {
-			super.finalize();
-			// System.out.println("finally clean treeNodes");
-		}
-	}
-
-	/**
-	 * Set the name for this node, the name is usually the label drawn with this
-	 * node.
-	 * 
-	 * @param s
-	 *            The new value of {@link #name}, the name for this node.
-	 */
-	public void setName(String s) {
-		name = s;
-	}
+//	/**
+//	 * Set the name for this node, the name is usually the label drawn with this
+//	 * node.
+//	 * 
+//	 * @param s
+//	 *            The new value of {@link #name}, the name for this node.
+//	 */
+//	public void setName(String s) {
+//		name = s;
+//	}
 
 	/**
 	 * Get the number of children under this node.
@@ -458,24 +460,24 @@ public class TreeNode {
 		return name + "(" + key + " @ " + height + ")";
 	}
 
-//	/**
-//	 * Set the {@link #bcnScore} for this node.
-//	 * 
-//	 * @param n
-//	 *            New value of {@link #bcnScore}.
-//	 */
-//	public void setBcnScore(float n) {
-//		bcnScore = new Double(n);
-//	}
+	// /**
+	// * Set the {@link #bcnScore} for this node.
+	// *
+	// * @param n
+	// * New value of {@link #bcnScore}.
+	// */
+	// public void setBcnScore(float n) {
+	// bcnScore = new Double(n);
+	// }
 
-//	/**
-//	 * Get the BCN score for this treenode.
-//	 * 
-//	 * @return Value of {@link #bcnScore} for this node.
-//	 */
-//	public Double getBcnScore() {
-//		return bcnScore;
-//	}
+	// /**
+	// * Get the BCN score for this treenode.
+	// *
+	// * @return Value of {@link #bcnScore} for this node.
+	// */
+	// public Double getBcnScore() {
+	// return bcnScore;
+	// }
 
 	public double longestWeight() {
 		if (isLeaf())

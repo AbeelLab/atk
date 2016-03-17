@@ -22,8 +22,9 @@ import atk.io.BetterTokenizer;
 
 /**
  * @author James
- * @author Thomas Abeel - Dependency on BetterTokenizer requires this class to be GPL,
- *         although the original code was BSD. Removing this dependency would allow us to revert to BSD.
+ * @author Thomas Abeel - Dependency on BetterTokenizer requires this class to
+ *         be GPL, although the original code was BSD. Removing this dependency
+ *         would allow us to revert to BSD.
  * 
  *         Parses the newick portion of a file For nexus files, additional
  *         node-number mapping is needed to rename files Identification of a
@@ -113,16 +114,20 @@ public class TreeParser {
 				if (st.ttype == BetterTokenizer.TT_WORD) {
 					if (st.sval.equalsIgnoreCase(beginTag)) {
 						st.nextToken();
-						if (st.ttype == BetterTokenizer.TT_WORD && st.sval.equalsIgnoreCase(treeSectionTag)) {
+						if (st.ttype == BetterTokenizer.TT_WORD
+								&& st.sval.equalsIgnoreCase(treeSectionTag)) {
 							// found a tree section, huzzah
 							boolean endOfTreeList = false;
 							st.nextToken();
-							while (st.ttype != BetterTokenizer.TT_EOF && !endOfTreeList) {
+							while (st.ttype != BetterTokenizer.TT_EOF
+									&& !endOfTreeList) {
 								// expect either a tree/utree id or the end tag
 								if (st.ttype == BetterTokenizer.TT_WORD) {
 									if (st.sval.equalsIgnoreCase(endTag))
 										endOfTreeList = true;
-									else if (st.sval.equalsIgnoreCase(treeID) || st.sval.equalsIgnoreCase(utreeID)) {
+									else if (st.sval.equalsIgnoreCase(treeID)
+											|| st.sval
+													.equalsIgnoreCase(utreeID)) {
 										// found the start of a tree
 										st.nextToken();
 										if (st.ttype == BetterTokenizer.TT_WORD) {
@@ -130,7 +135,8 @@ public class TreeParser {
 																		// tree
 																		// name
 										}
-										while (st.nextToken() != BetterTokenizer.TT_EOF && st.ttype != ';')
+										while (st.nextToken() != BetterTokenizer.TT_EOF
+												&& st.ttype != ';')
 											; // find the end of the tree
 									}
 								} else
@@ -145,8 +151,10 @@ public class TreeParser {
 						// not a tree section, find the end tag or the next
 						// start tag
 						else
-							while (st.nextToken() != BetterTokenizer.TT_EOF && st.ttype != BetterTokenizer.TT_WORD
-									|| (!st.sval.equalsIgnoreCase(beginTag) && !st.sval.equalsIgnoreCase(endTag)))
+							while (st.nextToken() != BetterTokenizer.TT_EOF
+									&& st.ttype != BetterTokenizer.TT_WORD
+									|| (!st.sval.equalsIgnoreCase(beginTag) && !st.sval
+											.equalsIgnoreCase(endTag)))
 								;
 					} else
 						st.nextToken();
@@ -236,7 +244,8 @@ public class TreeParser {
 		returnVector = null;
 		selection.setListData(treeNames.toArray());
 		selection.setVisible(true);
-		System.out.println("selection list should have: " + treeNames.toString());
+		System.out.println("selection list should have: "
+				+ treeNames.toString());
 
 		selectionFrame.pack();
 		selectionFrame.validate();
@@ -321,11 +330,11 @@ public class TreeParser {
 	private TreeNode popAndName(String name, Stack nodeStack) {
 		TreeNode topNode = (TreeNode) nodeStack.pop();
 		if (name == null) {
-			topNode.label = "";
-			topNode.setName("");
+
+			topNode.name = "";
 		} else {
-			topNode.label = name;
-			topNode.setName(name);
+			topNode.name = name;
+
 		}
 		try {
 			TreeNode parent = (TreeNode) nodeStack.peek();
@@ -361,7 +370,8 @@ public class TreeParser {
 	 *            progress bar here.
 	 * @return Tree parsed from the stream.
 	 */
-	public TreeNode tokenize(long fileLength, String streamName, JProgressBar progressBar) {
+	public TreeNode tokenize(long fileLength, String streamName,
+			JProgressBar progressBar) {
 		final char openBracket = '(', closeBracket = ')', childSeparator = ',', treeTerminator = lineTerminator, quote = '\'', doubleQuote = '"', infoSeparator = ':';
 		int progress = 0;
 		rootNode = new TreeNode();
@@ -376,7 +386,8 @@ public class TreeParser {
 		boolean nameNext = true;
 		int percentage = 0;
 
-		while (EOT == false && (thisToken = tokenizer.nextWord()) != BetterTokenizer.TT_EOF) {
+		while (EOT == false
+				&& (thisToken = tokenizer.nextWord()) != BetterTokenizer.TT_EOF) {
 			switch (thisToken) {
 			// case quote:
 			case doubleQuote:
@@ -388,7 +399,8 @@ public class TreeParser {
 					if (lastNamed != null)
 						lastNamed.setWeight(tokenizer.nval);
 					else
-						System.err.println("Error: can't set value " + tokenizer.nval + " to a null node");
+						System.err.println("Error: can't set value "
+								+ tokenizer.nval + " to a null node");
 					lastNamed = null;
 				}
 				progress += (new Double(tokenizer.nval).toString()).length();
@@ -396,7 +408,8 @@ public class TreeParser {
 				break;
 			case BetterTokenizer.TT_WORD:
 				if (!nameNext)
-					System.err.println("Error: didn't expect this name here: " + tokenizer.sval);
+					System.err.println("Error: didn't expect this name here: "
+							+ tokenizer.sval);
 				lastNamed = popAndName(tokenizer.sval, nodeStack);
 				progress += tokenizer.sval.length();
 				nameNext = false;
@@ -440,7 +453,8 @@ public class TreeParser {
 		}
 
 		if (!nodeStack.isEmpty())
-			System.err.println("Node stack still has " + nodeStack.size() + " things");
+			System.err.println("Node stack still has " + nodeStack.size()
+					+ " things");
 		// t.postProcess();
 		// return t;
 
@@ -485,14 +499,16 @@ public class TreeParser {
 		}
 		while ((readAllTrees || nextNumber != -1) && !treeSectionEnd)
 			try {
-				while (!treeSectionEnd && (thisToken = tokenizer.nextToken()) != BetterTokenizer.TT_EOF) {
+				while (!treeSectionEnd
+						&& (thisToken = tokenizer.nextToken()) != BetterTokenizer.TT_EOF) {
 					switch (thisToken) {
 					case BetterTokenizer.TT_WORD:
 						if (nextTreeID) {
 							currTreeName = tokenizer.sval;
 							debugOutput("found tree ID: " + currTreeName);
 							nextTreeID = false;
-						} else if (tokenizer.sval.equalsIgnoreCase(treeID) || tokenizer.sval.equalsIgnoreCase(utreeID)) {
+						} else if (tokenizer.sval.equalsIgnoreCase(treeID)
+								|| tokenizer.sval.equalsIgnoreCase(utreeID)) {
 							debugOutput("new tree");
 							nextTreeID = true; // tree tag found, next word is a
 												// tree name
@@ -505,7 +521,8 @@ public class TreeParser {
 							TreeNode t = tokenize(0, currTreeName, null);
 							treeArray.add(t);
 							if (treeNumbers != null && !treeNumbers.isEmpty()) {
-								nextNumber = ((Integer) treeNumbers.get(0)).intValue();
+								nextNumber = ((Integer) treeNumbers.get(0))
+										.intValue();
 								treeNumbers.remove(0);
 							} else
 								nextNumber = -1;
@@ -515,7 +532,8 @@ public class TreeParser {
 						break; // eat the equals
 					case commentOpen:
 						debugOutput("TEating comment");
-						while (thisToken != BetterTokenizer.TT_EOF && thisToken != commentClose) {
+						while (thisToken != BetterTokenizer.TT_EOF
+								&& thisToken != commentClose) {
 							thisToken = tokenizer.nextToken(); // eat the
 																// comments
 						}
@@ -565,7 +583,8 @@ public class TreeParser {
 		boolean EOF = false;
 		int thisToken;
 		try {
-			while (EOF == false && (thisToken = tokenizer.nextToken()) != BetterTokenizer.TT_EOF) {
+			while (EOF == false
+					&& (thisToken = tokenizer.nextToken()) != BetterTokenizer.TT_EOF) {
 				switch (thisToken) {
 				case BetterTokenizer.TT_WORD:
 					if (tokenizer.sval.equalsIgnoreCase(nexusFileID))
@@ -584,7 +603,8 @@ public class TreeParser {
 					break;
 				case commentOpen:
 					debugOutput("Eating comment");
-					while (thisToken != BetterTokenizer.TT_EOF && thisToken != commentClose) {
+					while (thisToken != BetterTokenizer.TT_EOF
+							&& thisToken != commentClose) {
 						thisToken = tokenizer.nextToken(); // eat the comments
 					}
 					break;
