@@ -36,6 +36,8 @@ package atk.compbio.tree;
 
 import java.util.*;
 
+import edu.northwestern.at.utils.StringUtils;
+
 /**
  * A class representing a node of a (phylogenetic) tree. The tree that this node
  * belongs to is of type Tree. Nodes have fields that store a pre- and
@@ -49,6 +51,27 @@ import java.util.*;
  * @see Tree
  */
 public class TreeNode {
+
+	public String exportNWK() {
+		if (isLeaf()) {
+			return name + ":" + weight;
+		} else {
+			StringBuffer b = new StringBuffer();
+			b.append("(");
+			for (int i = 0; i < children.size(); i++) {
+				if (i != 0) {
+					b.append(",");
+				}
+				b.append(children.get(i).exportNWK());
+			}
+			b.append(")");
+			if (!isRoot())
+				b.append(":" + weight);
+			else
+				b.append(";");
+			return b.toString();
+		}
+	}
 
 	/**
 	 * Array of child nodes that are attached below this internal node. Null if
@@ -180,11 +203,11 @@ public class TreeNode {
 	 */
 	protected String name = ""; // the long form in fully qualified names
 
-//	/**
-//	 * The text that appears when the node is highlighted or has a name
-//	 * displayed.
-//	 */
-//	public String label = ""; // always short form
+	// /**
+	// * The text that appears when the node is highlighted or has a name
+	// * displayed.
+	// */
+	// public String label = ""; // always short form
 
 	/** Distance from this node to the root node. The root is at height 1. */
 	public int height;
@@ -248,16 +271,17 @@ public class TreeNode {
 	// }
 	// }
 
-//	/**
-//	 * Set the name for this node, the name is usually the label drawn with this
-//	 * node.
-//	 * 
-//	 * @param s
-//	 *            The new value of {@link #name}, the name for this node.
-//	 */
-//	public void setName(String s) {
-//		name = s;
-//	}
+	// /**
+	// * Set the name for this node, the name is usually the label drawn with
+	// this
+	// * node.
+	// *
+	// * @param s
+	// * The new value of {@link #name}, the name for this node.
+	// */
+	// public void setName(String s) {
+	// name = s;
+	// }
 
 	/**
 	 * Get the number of children under this node.
@@ -312,7 +336,7 @@ public class TreeNode {
 	 * @return True if the names of both nodes are the same, false otherwise.
 	 */
 	public boolean equals(TreeNode n) {
-		return (name.equals(n.name));
+		return (name.equals(n.name)) && key == n.key;
 	}
 
 	/**
