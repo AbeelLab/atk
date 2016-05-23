@@ -17,5 +17,14 @@ class TestTool extends FunSuite with Tool {
   test("testLog") {
     log("Test")
   }
+  
+  test("testConfigOutput"){
+    case class Config(val input:String="inputString");
+    val config=new Config;
+    val s=generatorInfo(config)
+    println(s)
+    assert(s.contains("(input,inputString)"))
+    
+  }
 
 }
