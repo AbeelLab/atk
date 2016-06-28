@@ -13,20 +13,20 @@ sealed trait Variation {
 
 sealed trait LP;
 
-case class Match extends Variation with SNP
+case object Match extends Variation with SNP
 
 class Substitution extends Variation
-case class SingleSubstitution extends Substitution with SNP
-case class LongSubstitution extends Substitution with LP
+case object SingleSubstitution extends Substitution with SNP
+case object LongSubstitution extends Substitution with LP
 //case class ComplexSubstitution extends Variation
 
 class Deletion extends Variation
-case class SingleDeletion extends Deletion with SNP
-case class LongDeletion extends Deletion with LP
+case object SingleDeletion extends Deletion with SNP
+case object LongDeletion extends Deletion with LP
 
 class Insertion extends Variation
-case class SingleInsertion extends Insertion with SNP
-case class LongInsertion extends Insertion with LP
+case object SingleInsertion extends Insertion with SNP
+case object LongInsertion extends Insertion with LP
 
 class VCFLine(val line: String) {
 
@@ -45,36 +45,36 @@ class VCFLine(val line: String) {
 
   lazy val refLength = ref.length()
   lazy val altLength = alt.length()
-lazy val diff = refLength - altLength
+  lazy val diff = refLength - altLength
   lazy val variation: Variation = {
-    if(alt.equals(".")){
-      new Match
-    }else if (ref.length() == alt.length()) {
+    if (alt.equals(".")) {
+      Match
+    } else if (ref.length() == alt.length()) {
       if (ref.equals(alt))
-        new Match
+        Match
       else {
         if (ref.length() == 1)
-          new SingleSubstitution
+          SingleSubstitution
         else
-          new LongSubstitution
+          LongSubstitution
       }
     } else {
       assume(ref.length() > 0 && alt.length() > 0)
       if (ref.length() == 1 || alt.length() == 1) {
-        
+
         //if (ref.length() > alt.length())
         if (diff > 1)
-          new LongDeletion
+          LongDeletion
         else if (diff > 0)
-          new SingleDeletion
+          SingleDeletion
         else if (diff < -1)
-          new LongInsertion
+          LongInsertion
         else if (diff < 0)
-          new SingleInsertion
+          SingleInsertion
         else
           throw new RuntimeException("This is not supposed to happen!")
       } else {
-        new LongSubstitution
+        LongSubstitution
       }
 
     }
@@ -85,8 +85,8 @@ lazy val diff = refLength - altLength
   lazy val blankFilter = filter.equals(".")
 
   lazy val pass = filter.equals("PASS")
-  
-  lazy val passOrUnfiltered=pass || filter.equals(".")
+
+  lazy val passOrUnfiltered = pass || filter.equals(".")
 
   def filter = if (arr.length > 6) arr(6) else "."
 
