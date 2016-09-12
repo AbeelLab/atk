@@ -18,6 +18,15 @@ class DNAString(str: String) {
 
   }
 
+  private var n: Boolean = false
+  private var gap: Boolean = false
+  private var undefined: Boolean = false
+  
+
+  def hasN = n
+  def hasGap = gap
+  def hasUndefined=undefined
+
   def longHashCode = hash
 
   private val bytes = Array.ofDim[Byte]((str.length() + 1) / 2)
@@ -48,12 +57,18 @@ class DNAString(str: String) {
       3;
     case 't' | 'T' =>
       4;
-    case 'n' | 'N' =>
+    case 'n' | 'N' =>{
+      n=true
       5;
-    case '-' =>
+    }
+    case '-' =>{
+      gap=true
       6;
-    case _ =>
+    }
+    case _ =>{
+      undefined=true
       0;
+    }
   }
 
   /* Zero based setter for the sequence */
