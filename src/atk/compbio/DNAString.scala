@@ -7,14 +7,19 @@ package atk.compbio
  */
 class DNAString(str: String) {
 
-  val len = str.size
+  private val len = str.size
   def size = len
   def apply(i: Int) = get(i)
 
   private var hash: Long = 1
   override def hashCode() = hash.toInt
-  def longHashCode=hash
-  
+  override def equals(o: Any) = {
+    o.isInstanceOf[DNAString] && o.asInstanceOf[DNAString].len == this.len && o.asInstanceOf[DNAString].hash == this.hash
+
+  }
+
+  def longHashCode = hash
+
   private val bytes = Array.ofDim[Byte]((str.length() + 1) / 2)
 
   for (i <- 0 until len) {
@@ -86,6 +91,10 @@ class DNAString(str: String) {
       current &= mask;
     }
     return decode(current);
+  }
+
+  override def toString() = {
+    (0 until len).map(i => get(i)).mkString("")
   }
 
 }

@@ -27,7 +27,7 @@ class TestDNAString extends FunSuite {
   test("test oob") {
  
     an[IndexOutOfBoundsException] should be thrownBy dna.get(-1)
-    an[IndexOutOfBoundsException] should be thrownBy dna.get(dna.len)
+    an[IndexOutOfBoundsException] should be thrownBy dna.get(dna.size)
   }
 
 }
