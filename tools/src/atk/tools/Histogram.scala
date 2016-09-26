@@ -20,7 +20,7 @@ import be.abeel.graphics.GraphicsFileExport
 import be.abeel.jfreechart.JFreeChartWrapper
 
 object Histogram extends Tool {
-  case class HistogramConfig(val input: File = null, val outputPrefix: String = "histogram", val column: Int = 0, val bin: Int = 1, val x: String = "X-axis", val y: String = "Y-axis", val log: Boolean = false)
+  case class HistogramConfig(val input: File = null, val outputPrefix: String = "histogram", val column: Int = 0, val bin: Int = 1, val x: String = "X-axis", val y: String = "Y-axis", val log: Boolean = false, val limit: Int = -1)
 
   def main(args: Array[String]): Unit = {
 
@@ -30,6 +30,7 @@ object Histogram extends Tool {
       opt[String]('x', "x-label") action { (x, c) => c.copy(x = x) } text ("X-axis label")
       opt[String]('y', "y-label") action { (x, c) => c.copy(y = x) } text ("Y-axis label")
       opt[Int]('c', "column") action { (x, c) => c.copy(column = x) } text ("Column from which to extract values. Default = 0")
+      opt[Int]("stdev-limit") action { (x, c) => c.copy(limit = x) } text ("Maximum standard devitations on domain. Default = unlimited")
       opt[Unit]("log") action { (x, c) => c.copy(log = true) } text ("Take log of values. Default = false")
     }
     parser.parse(args, HistogramConfig()) map { config =>
@@ -48,30 +49,47 @@ object Histogram extends Tool {
         v
     }
 
-    plot(values,config.outputPrefix, config.x,config.y)
+    plot(values, config.outputPrefix, config.x, config.y,config)
   }
 
-  private def binbin(data: List[Double]): Map[Double, Double] = {
+  private def binbin(data: List[Double], config: HistogramConfig): Map[Double, Double] = {
 
-    val ds = new DescriptiveStatistics(data.toArray);
+    val dsA = new DescriptiveStatistics(data.toArray);
+    val q1A = dsA.getPercentile(25)
+    val q2A = dsA.getPercentile(50)
+    val q3A = dsA.getPercentile(75)
+    println("n=" + data.length)
+    println("pow=" + Math.pow(data.length, -1 / 3))
+    println("Q1=" + q1A)
+    println("Q2=" + q2A)
+    println("Q3=" + q3A)
+    val sd = dsA.getStandardDeviation
+
+    println("Truncating data...")
+    val cleanData = if (config.limit > 0)
+      data.filter(d => d >= q2A - config.limit * sd && d <= q2A + config.limit * sd)
+    else data
+
+    val ds = new DescriptiveStatistics(cleanData.toArray);
     val q1 = ds.getPercentile(25)
     val q2 = ds.getPercentile(50)
     val q3 = ds.getPercentile(75)
+
+     println("n=" + cleanData.length)
+    println("Q1=" + q1)
+    println("Q2=" + q2)
+    println("Q3=" + q3)
+
     /* Freedman-Diaconis rule */
     val h = 2.0 * (q3 - q1) * Math.pow(data.length, -1.0 / 3)
     // double bottom=0;
 
-    println("n=" + data.length)
-    println("pow=" + Math.pow(data.length, -1 / 3))
-    println("Q1=" + q1)
-    println("Q2=" + q2)
-    println("Q3=" + q3)
     //		println("Min=" + ds.getMin() + "\tMax=" + top + "\t" + data.length+"\t"+h);
     println("h: " + h)
     //		val range=(ds.getMax() - ds.getMin()) / h
     val range = h
     println("range= " + range)
-    val binned = data.groupBy(g => (g / range).toInt).mapValues(_.size).map(f => (f._1 * range, f._2.toDouble / data.size))
+    val binned = cleanData.groupBy(g => (g / range).toInt).mapValues(_.size).map(f => (f._1 * range, f._2.toDouble / cleanData.size))
 
     binned
     //		double ysum = 0;
@@ -84,8 +102,8 @@ object Histogram extends Tool {
     //		return bins;
   }
 
-  def plot(values: List[Double],outputPrefix:String, x:String,y:String) {
-    val input = binbin(values)
+  def plot(values: List[Double], outputPrefix: String, x: String, y: String,config:HistogramConfig) {
+    val input = binbin(values,config)
 
     val dcd = new DefaultXYDataset();
 
