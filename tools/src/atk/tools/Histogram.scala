@@ -55,6 +55,7 @@ object Histogram extends Tool {
 
     val ds = new DescriptiveStatistics(data.toArray);
     val q1 = ds.getPercentile(25)
+    val q2 = ds.getPercentile(50)
     val q3 = ds.getPercentile(75)
     /* Freedman-Diaconis rule */
     val h = 2.0 * (q3 - q1) * Math.pow(data.length, -1.0 / 3)
@@ -63,6 +64,7 @@ object Histogram extends Tool {
     println("n=" + data.length)
     println("pow=" + Math.pow(data.length, -1 / 3))
     println("Q1=" + q1)
+    println("Q2=" + q2)
     println("Q3=" + q3)
     //		println("Min=" + ds.getMin() + "\tMax=" + top + "\t" + data.length+"\t"+h);
     println("h: " + h)
