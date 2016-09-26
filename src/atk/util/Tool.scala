@@ -85,9 +85,9 @@ trait Tool extends Lines {
       out.close()
     }
   }
-  private def classFileName() = { Thread.currentThread().getStackTrace()(2).getFileName() };
+  private def classFileName() = {Thread.currentThread().getStackTrace().takeRight(1)(0).getFileName() };
 
-  private def classInfo() = { Thread.currentThread().getStackTrace()(2).getClassName() };
+  private def classInfo() = { Thread.currentThread().getStackTrace().takeRight(1)(0).getClassName() };
 
   private def executeEnvironment() = { this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath() }
 
