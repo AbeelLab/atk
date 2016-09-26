@@ -7,6 +7,10 @@ package atk.compbio
  */
 class DNAString(str: String) {
 
+  def this(arr:Array[Byte]){
+   this(new String(arr)) 
+  }
+  
   private val len = str.size
   def size = len
   def apply(i: Int) = get(i)
