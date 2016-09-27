@@ -13,7 +13,6 @@ object ATKConsole {
         case "help" => listInstructions
         case "histogram" => Histogram.main(args.drop(1))
         case "string-replace" =>StringReplace.main(args.drop(1))
-        case "tree2list" => Tree2List.main(args.drop(1))
         case "fisher-list"=>FisherList.main(args.drop(1))
         case _ => listInstructions
       }
