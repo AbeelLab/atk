@@ -18,9 +18,10 @@ import org.jfree.chart.renderer.xy.XYBarRenderer
 import org.jfree.chart.renderer.xy.StandardXYBarPainter
 import be.abeel.graphics.GraphicsFileExport
 import be.abeel.jfreechart.JFreeChartWrapper
+import atk.io.NixWriter
 
 object Histogram extends Tool {
-  case class HistogramConfig(val input: File = null, val outputPrefix: String = "histogram", val column: Int = 0, val bin: Int = 1, val x: String = "X-axis", val y: String = "Y-axis", val log: Boolean = false, val limit: Int = -1)
+  case class HistogramConfig(val input: File = null, val outputPrefix: String = "histogram", val column: Int = 0, val bin: Int = 1, val x: String = "X-axis", val y: String = "Y-axis", val log: Boolean = false, val limit: Int = -1,val tab:Boolean=false)
 
   def main(args: Array[String]): Unit = {
 
@@ -32,6 +33,7 @@ object Histogram extends Tool {
       opt[Int]('c', "column") action { (x, c) => c.copy(column = x) } text ("Column from which to extract values. Default = 0")
       opt[Int]("stdev-limit") action { (x, c) => c.copy(limit = x) } text ("Maximum standard devitations on domain. Default = unlimited")
       opt[Unit]("log") action { (x, c) => c.copy(log = true) } text ("Take log of values. Default = false")
+      opt[Unit]("tabulated") action { (x, c) => c.copy(tab = true) } text ("Export tab-delimited file with data in histogram")
     }
     parser.parse(args, HistogramConfig()) map { config =>
       histo(config)
@@ -105,6 +107,13 @@ object Histogram extends Tool {
   def plot(values: List[Double], outputPrefix: String, x: String, y: String,config:HistogramConfig) {
     val input = binbin(values,config)
 
+    
+    if(config.tab){
+      val pw=new NixWriter(config.outputPrefix+".tabulated.tsv",config)
+      input.map(p=>pw.println(p._1+"\t"+p._2))
+      pw.close
+    }
+    
     val dcd = new DefaultXYDataset();
 
     val data = input.toList.sortBy(_._1)
