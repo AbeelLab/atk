@@ -10,21 +10,29 @@
  * See the License for the specific language governing permissions
  * and limitations under the License.
  *
- * Copyright 2005-2013 Thomas Abeel
+ * Copyright 2005-2016 Thomas Abeel
  */
 package atk.util
 
-import scala.collection.BitSet
+import scala.collection.mutable.BitSet
+
 /**
  * @author Thomas Abeel
  */
-trait BitSetTools {
+object BitSetTools {
 
-  def bitset2String(bs: BitSet, len: Int): String = {
-    val str = "0" * len
-    val bytes = str.getBytes()
-    bs.map(f => bytes(f) = '1')
-    new String(bytes)
+  def toString(bs: BitSet, nbits: Int): String = {
+    val bytes=Array.ofDim[Byte](nbits);
+    bs.map(f => bytes(f) = 1)
+    bytes.mkString("")
+  }
+
+  def fromString(str: String): BitSet = {
+    val tmp=str.zipWithIndex.filter(f=>f._1=='1').map(_._2)
+    BitSet(tmp: _*)
+    
+   
+        
   }
 
 }
