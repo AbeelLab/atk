@@ -35,7 +35,7 @@ object Tool extends Tool {
  *
  * @author Thomas Abeel
  */
-trait Tool extends Lines {
+trait Tool extends Lines with LoggingTrait{
 
   val version = "There is no version information available for this tool"
 
