@@ -30,7 +30,7 @@ object Scatter extends Tool with ScatterTrait {
 
     val parser = new scopt.OptionParser[Config]("java -jar atk.jar scatter") {
       val default = new Config()
-      opt[File]('i', "input") required () action { (x, c) => c.copy(input = x) } text ("Input data X, keys must match Y")
+      opt[File]('i', "input") required () action { (x, c) => c.copy(input = x) } text ("Input data. This should be a two column file with numberic values.")
       opt[File]('o', "output") action { (x, c) => c.copy(output = x) } text ("Output file")
       opt[String]('x', "x-label") action { (x, c) => c.copy(x = x) } text ("X-axis label")
       opt[String]('y', "y-label") action { (x, c) => c.copy(y = x) } text ("Y-axis label")
