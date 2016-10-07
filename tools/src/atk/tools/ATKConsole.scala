@@ -16,6 +16,7 @@ object ATKConsole {
         case "fisher-list"=>FisherList.main(args.drop(1))
         case "scatter" => Scatter.main(args.drop(1))
         case "scatter-xy" =>ScatterXY.main(args.drop(1))
+        case "zscore" => ZscoreNormalize.main(args.drop(1))
         case _ => listInstructions
       }
     }
@@ -31,6 +32,7 @@ object ATKConsole {
     println("\tfisher-list        Do Fisher exact test on each value pair in a list taking the complete list as population.")
     println("\tscatter            Generate scatter plot")
     println("\tscatter-xy         Generate scatter plot")
+    println("\tzscore             Zscore normalize a value column")
     println("\tlist\t\tShow help")
     println("\thelp\t\tShow help")
 
