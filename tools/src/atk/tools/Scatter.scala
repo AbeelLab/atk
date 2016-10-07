@@ -24,7 +24,7 @@ import org.jfree.chart.renderer.category.ScatterRenderer
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer
 
 object Scatter extends Tool with ScatterTrait {
-  case class Config(val input: File = null, val output: File = null, val x: String = "X-axis", val y: String = "Y-axis", val log: Boolean = false)
+  case class Config(val input: File = null, val output: File = null, val x: String = "X-axis", val y: String = "Y-axis", val log: Boolean = false, val minX: Double = Double.MinValue, val maxX: Double = Double.MaxValue, val minY: Double = Double.MinValue, val maxY: Double = Double.MaxValue)
 
   def main(args: Array[String]): Unit = {
 
@@ -34,6 +34,10 @@ object Scatter extends Tool with ScatterTrait {
       opt[File]('o', "output") action { (x, c) => c.copy(output = x) } text ("Output file")
       opt[String]('x', "x-label") action { (x, c) => c.copy(x = x) } text ("X-axis label")
       opt[String]('y', "y-label") action { (x, c) => c.copy(y = x) } text ("Y-axis label")
+      opt[Double]("x-min") action { (x, c) => c.copy(minX = x) } text ("Minimum value to display on the X-axis")
+      opt[Double]("y-min") action { (x, c) => c.copy(minY = x) } text ("Minimum value to display on the Y-axis")
+      opt[Double]("x-max") action { (x, c) => c.copy(maxX = x) } text ("Maximum value to display on the X-axis")
+      opt[Double]("y-max") action { (x, c) => c.copy(maxY = x) } text ("Maximum value to display on the Y-axis")
       opt[Unit]("log") action { (x, c) => c.copy(log = true) } text ("Take log of values. Default = " + default.log)
 
     }
@@ -47,7 +51,7 @@ object Scatter extends Tool with ScatterTrait {
 
     val data = tColumns(List(0, 1), tLines(config.input)).map { list => list(0).toDouble -> list(1).toDouble }
 
-    scatterPlot(data, config.x, config.y, config.output.toString)
+    scatterPlot(data, config.x, config.y, config.output.toString,config.minX,config.maxX,config.minY,config.maxY)
 
   }
 

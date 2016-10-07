@@ -15,7 +15,7 @@ import be.abeel.jfreechart.JFreeChartWrapper
 import org.jfree.chart.plot.PlotOrientation
 
 trait ScatterTrait {
-  def scatterPlot(data: List[(Double, Double)], xLabel: String, yLabel: String, output: String) {
+  def scatterPlot(data: List[(Double, Double)], xLabel: String, yLabel: String, output: String, minX:Double=Double.MinValue, maxX:Double=Double.MaxValue, minY:Double=Double.MinValue, maxY:Double=Double.MaxValue) {
 
     val arr = Array.ofDim[Array[Double]](2)
     arr(0) = Array.ofDim(data.size)
@@ -47,7 +47,15 @@ trait ScatterTrait {
     // chart.getXYPlot().addAnnotation(ta);
 
     val xy = chart.getXYPlot().getRenderer().asInstanceOf[XYLineAndShapeRenderer];
-    //     chart.getXYPlot().getDomainAxis().setRange(50, 100);
+    
+    val xStart=if(minX>Double.MinValue)minX else chart.getXYPlot.getDomainAxis.getRange.getLowerBound
+    val xEnd=if(maxX<Double.MaxValue)maxX else chart.getXYPlot.getDomainAxis.getRange.getUpperBound
+    val yStart=if(minY>Double.MinValue)minY else chart.getXYPlot.getRangeAxis.getRange.getLowerBound
+    val yEnd=if(maxY<Double.MaxValue)maxY else chart.getXYPlot.getRangeAxis.getRange.getUpperBound
+    
+    chart.getXYPlot().getDomainAxis().setRange(xStart, xEnd);
+    chart.getXYPlot().getRangeAxis().setRange(yStart, yEnd);
+    
     chart.setBackgroundPaint(Color.WHITE);
     chart.getXYPlot().setBackgroundPaint(Color.WHITE);
     //    xy.setShadowVisible(false);
