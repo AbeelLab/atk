@@ -84,24 +84,13 @@ object Histogram extends Tool {
 
     /* Freedman-Diaconis rule */
     val h = 2.0 * (q3 - q1) * Math.pow(data.length, -1.0 / 3)
-    // double bottom=0;
-
-    //		println("Min=" + ds.getMin() + "\tMax=" + top + "\t" + data.length+"\t"+h);
     println("h: " + h)
-    //		val range=(ds.getMax() - ds.getMin()) / h
     val range = h
     println("range= " + range)
     val binned = cleanData.groupBy(g => (g / range).toInt).mapValues(_.size).map(f => (f._1 * range, f._2.toDouble / cleanData.size))
 
     binned
-    //		double ysum = 0;
-    //		for (int i = 0; i < bins[1].length; i++)
-    //			ysum += bins[1][i];
-    //
-    //		for (int i = 0; i < bins[1].length; i++)
-    //			bins[1][i] /= ysum;
-    //		;
-    //		return bins;
+  
   }
 
   def plot(values: List[Double], outputPrefix: String, x: String, y: String,config:HistogramConfig) {
@@ -131,36 +120,22 @@ object Histogram extends Tool {
 
     val chart = ChartFactory.createXYBarChart(null, x, false, y, new XYBarDataset(dcd, w),
       PlotOrientation.VERTICAL, false, false, false);
-    // if (countNormalization) {
-    // chart.getXYPlot().getRangeAxis().setRange(0, 0.5);
-    // }
-
+  
     /* Move legends */
     val lt = new LegendTitle(chart.getXYPlot());
     lt.setItemFont(new Font("Dialog", Font.PLAIN, 9));
     lt.setBackgroundPaint(new Color(0xff, 0xff, 0xcc, 100));
     lt.setPosition(RectangleEdge.LEFT);
     lt.setFrame(new LineBorder(Color.GRAY, new BasicStroke(), new RectangleInsets()));
-    // XYTitleAnnotation ta = new XYTitleAnnotation(0.02, 0.98, lt,
-    // RectangleAnchor.TOP_LEFT);
-
-    // ta.setMaxWidth(0.48);
-    // chart.getXYPlot().addAnnotation(ta);
+   
 
     val xy = chart.getXYPlot().getRenderer().asInstanceOf[XYBarRenderer];
-    // chart.getXYPlot().getDomainAxis().setRange(50, 100);
     chart.setBackgroundPaint(Color.WHITE);
     chart.getXYPlot().setBackgroundPaint(Color.WHITE);
     xy.setShadowVisible(false);
-    // xy.setDrawBarOutline(false);
-    // xy.setDefaultBarPainter(new StandardXYBarPainter());
     xy.setBarPainter(new StandardXYBarPainter());
     xy.setGradientPaintTransformer(null);
-    // xy.setDefaultBarPainter(new StandardXYBarPainter());
-    // System.out.println(xy.getBaseFillPaint());
-    // System.out.println(xy.getBaseShape());
-    // System.out.println(xy.getBaseStroke());
-    val colors = List(Color.black, Color.red, new Color(0, 0, 0xCC), Color.GREEN, new Color(0xFF, 0x99, 0x33))
+     val colors = List(Color.black, Color.red, new Color(0, 0, 0xCC), Color.GREEN, new Color(0xFF, 0x99, 0x33))
     for (i <- 0 until chart.getXYPlot().getSeriesCount()) {
       xy.setSeriesPaint(i, colors(i));
 
@@ -170,30 +145,6 @@ object Histogram extends Tool {
 
   }
 
-  //	public static void plotReverseCumulative(double[] dd, String string) {
-  //		double[][] data = binbin(dd);
-  //
-  //		if (data == null)
-  //			return;
-  //		for (int i = data[0].length - 2; i >= 0; i--) {
-  //			data[1][i] = data[1][i + 1] + data[1][i];
-  //		}
-  //
-  //		plot(data, string);
-  //
-  //	}
-  //
-  //	public static void plotCumulative(double[] dd, String string) {
-  //		double[][] data = binbin(dd);
-  //
-  //		if (data == null)
-  //			return;
-  //		for (int i = 1; i < data[0].length; i++) {
-  //			data[1][i] = data[1][i - 1] + data[1][i];
-  //		}
-  //
-  //		plot(data, string);
-  //
-  //	}
+ 
 
 }
