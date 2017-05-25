@@ -21,7 +21,7 @@ import be.abeel.jfreechart.JFreeChartWrapper
 import atk.io.NixWriter
 
 object Histogram extends Tool {
-  case class HistogramConfig(val input: File = null, val outputPrefix: String = "histogram", val column: Int = 0, val bin: Int = 1, val x: String = "X-axis", val y: String = "Y-axis", val log: Boolean = false, val limit: Int = -1,val tab:Boolean=false)
+  case class HistogramConfig(val input: File = null, val outputPrefix: String = "histogram", val column: Int = 0, val bin: Int = 1, val x: String = "X-axis", val y: String = "Y-axis", val log: Boolean = false, val limit: Int = -1, val tab: Boolean = false, val nobin: Boolean = false)
 
   def main(args: Array[String]): Unit = {
 
@@ -34,6 +34,8 @@ object Histogram extends Tool {
       opt[Int]("stdev-limit") action { (x, c) => c.copy(limit = x) } text ("Maximum standard devitations on domain. Default = unlimited")
       opt[Unit]("log") action { (x, c) => c.copy(log = true) } text ("Take log of values. Default = false")
       opt[Unit]("tabulated") action { (x, c) => c.copy(tab = true) } text ("Export tab-delimited file with data in histogram")
+      opt[Unit]("no-bin") action { (x, c) => c.copy(nobin = true) } text ("Do not automagically bin data")
+     
     }
     parser.parse(args, HistogramConfig()) map { config =>
       histo(config)
@@ -51,7 +53,7 @@ object Histogram extends Tool {
         v
     }
 
-    plot(values, config.outputPrefix, config.x, config.y,config)
+    plot(values, config.outputPrefix, config.x, config.y, config)
   }
 
   private def binbin(data: List[Double], config: HistogramConfig): Map[Double, Double] = {
@@ -77,7 +79,7 @@ object Histogram extends Tool {
     val q2 = ds.getPercentile(50)
     val q3 = ds.getPercentile(75)
 
-     println("n=" + cleanData.length)
+    println("n=" + cleanData.length)
     println("Q1=" + q1)
     println("Q2=" + q2)
     println("Q3=" + q3)
@@ -90,19 +92,22 @@ object Histogram extends Tool {
     val binned = cleanData.groupBy(g => (g / range).toInt).mapValues(_.size).map(f => (f._1 * range, f._2.toDouble / cleanData.size))
 
     binned
-  
+
   }
 
-  def plot(values: List[Double], outputPrefix: String, x: String, y: String,config:HistogramConfig) {
-    val input = binbin(values,config)
+  def plot(values: List[Double], outputPrefix: String, x: String, y: String, config: HistogramConfig) {
+    val input = if (config.nobin) {
+      values.groupBy { identity }.mapValues(_.size.toDouble)
+    } else {
+      binbin(values, config)
+    }
 
-    
-    if(config.tab){
-      val pw=new NixWriter(config.outputPrefix+".tabulated.tsv",config)
-      input.map(p=>pw.println(p._1+"\t"+p._2))
+    if (config.tab) {
+      val pw = new NixWriter(config.outputPrefix + ".tabulated.tsv", config)
+      input.map(p => pw.println(p._1 + "\t" + p._2))
       pw.close
     }
-    
+
     val dcd = new DefaultXYDataset();
 
     val data = input.toList.sortBy(_._1)
@@ -120,14 +125,13 @@ object Histogram extends Tool {
 
     val chart = ChartFactory.createXYBarChart(null, x, false, y, new XYBarDataset(dcd, w),
       PlotOrientation.VERTICAL, false, false, false);
-  
+
     /* Move legends */
     val lt = new LegendTitle(chart.getXYPlot());
     lt.setItemFont(new Font("Dialog", Font.PLAIN, 9));
     lt.setBackgroundPaint(new Color(0xff, 0xff, 0xcc, 100));
     lt.setPosition(RectangleEdge.LEFT);
     lt.setFrame(new LineBorder(Color.GRAY, new BasicStroke(), new RectangleInsets()));
-   
 
     val xy = chart.getXYPlot().getRenderer().asInstanceOf[XYBarRenderer];
     chart.setBackgroundPaint(Color.WHITE);
@@ -135,7 +139,7 @@ object Histogram extends Tool {
     xy.setShadowVisible(false);
     xy.setBarPainter(new StandardXYBarPainter());
     xy.setGradientPaintTransformer(null);
-     val colors = List(Color.black, Color.red, new Color(0, 0, 0xCC), Color.GREEN, new Color(0xFF, 0x99, 0x33))
+    val colors = List(Color.black, Color.red, new Color(0, 0, 0xCC), Color.GREEN, new Color(0xFF, 0x99, 0x33))
     for (i <- 0 until chart.getXYPlot().getSeriesCount()) {
       xy.setSeriesPaint(i, colors(i));
 
@@ -144,7 +148,5 @@ object Histogram extends Tool {
     GraphicsFileExport.exportPNG(new JFreeChartWrapper(chart), outputPrefix, 1024, 800);
 
   }
-
- 
 
 }
