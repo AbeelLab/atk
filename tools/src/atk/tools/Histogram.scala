@@ -19,9 +19,10 @@ import org.jfree.chart.renderer.xy.StandardXYBarPainter
 import be.abeel.graphics.GraphicsFileExport
 import be.abeel.jfreechart.JFreeChartWrapper
 import atk.io.NixWriter
+import org.jfree.chart.axis.ValueAxis
 
 object Histogram extends Tool {
-  case class HistogramConfig(val input: File = null, val outputPrefix: String = "histogram", val column: Int = 0, val bin: Int = 1, val x: String = "X-axis", val y: String = "Y-axis", val log: Boolean = false, val limit: Int = -1, val tab: Boolean = false, val nobin: Boolean = false)
+  case class HistogramConfig(val input: File = null, val outputPrefix: String = "histogram", val column: Int = 0, val bin: Int = 1, val x: String = "X-axis", val y: String = "Y-axis", val log: Boolean = false, val limit: Int = -1, val tab: Boolean = false, val nobin: Boolean = false,val domainStart:Double=Double.NaN,val domainEnd:Double=Double.NaN)
 
   def main(args: Array[String]): Unit = {
 
@@ -53,7 +54,7 @@ object Histogram extends Tool {
         v
     }
 
-    plot(values, config.outputPrefix, config.x, config.y, config)
+    plot(values, config)
   }
 
   private def binbin(data: List[Double], config: HistogramConfig): Map[Double, Double] = {
@@ -95,7 +96,7 @@ object Histogram extends Tool {
 
   }
 
-  def plot(values: List[Double], outputPrefix: String, x: String, y: String, config: HistogramConfig) {
+  def plot(values: List[Double], config: HistogramConfig) {
     val input = if (config.nobin) {
       values.groupBy { identity }.mapValues(_.size.toDouble)
     } else {
@@ -123,7 +124,7 @@ object Histogram extends Tool {
 
     val w = (arr(0)(0) - arr(0)(1)) / 1.1
 
-    val chart = ChartFactory.createXYBarChart(null, x, false, y, new XYBarDataset(dcd, w),
+    val chart = ChartFactory.createXYBarChart(null, config.x, false, config.y, new XYBarDataset(dcd, w),
       PlotOrientation.VERTICAL, false, false, false);
 
     /* Move legends */
@@ -134,6 +135,13 @@ object Histogram extends Tool {
     lt.setFrame(new LineBorder(Color.GRAY, new BasicStroke(), new RectangleInsets()));
 
     val xy = chart.getXYPlot().getRenderer().asInstanceOf[XYBarRenderer];
+    val origDomain=chart.getXYPlot.getDomainAxis
+    if(!config.domainStart.isNaN())
+      origDomain.setLowerBound(config.domainStart)
+    if(!config.domainEnd.isNaN())
+      origDomain.setUpperBound(config.domainEnd)
+        
+    
     chart.setBackgroundPaint(Color.WHITE);
     chart.getXYPlot().setBackgroundPaint(Color.WHITE);
     xy.setShadowVisible(false);
@@ -145,7 +153,7 @@ object Histogram extends Tool {
 
     }
 
-    GraphicsFileExport.exportPNG(new JFreeChartWrapper(chart), outputPrefix, 1024, 800);
+    GraphicsFileExport.exportPNG(new JFreeChartWrapper(chart), config.outputPrefix, 1024, 800);
 
   }
 
