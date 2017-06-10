@@ -46,7 +46,7 @@ public class ExtensionFileFilter implements FileFilter {
     public boolean accept(File file) {
         boolean accept = false;
         for (String s : extension) {
-            if (file.getName().endsWith(s))
+            if (file.getName().toLowerCase().endsWith(s))
                 accept = true;
         }
         return accept;
