@@ -46,6 +46,9 @@ trait Tool extends Lines with LoggingTrait{
 
   val nf = NumberFormat.getInstance(Locale.US)
   nf.setMaximumFractionDigits(2)
+  
+  val nf0 = NumberFormat.getInstance(Locale.US)
+  nf0.setMaximumFractionDigits(0)
 
   lazy val naturalOrdering = Ordering.comparatorToOrdering(NaturalOrderComparator.NUMERICAL_ORDER_IGNORE_CASE)
   private var logger: PrintWriter = null;
@@ -65,7 +68,7 @@ trait Tool extends Lines with LoggingTrait{
   def progress(reportFreq: Int) = {
     if (progressCounter % reportFreq == 0) {
       val interval = System.currentTimeMillis() - startTime
-      log("Processing: " + progressCounter + "\t" + new TimeInterval(interval) + "\t" + nf.format(progressCounter * 1000L / (interval + .1)) + " units/s\t" + LocalDateTime.now())
+      log("Processing: " + nf0.format(progressCounter) + "\t" + new TimeInterval(interval) + "\t" + nf.format(progressCounter * 1000L / (interval + .1)) + " units/s\t" + LocalDateTime.now())
     }
     progressCounter += 1
   }
