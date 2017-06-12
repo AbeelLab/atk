@@ -84,7 +84,17 @@ class VCFLine(val line: String) {
 
   lazy val blankFilter = filter.equals(".")
 
-  lazy val pass = filter.equals("PASS")
+  lazy val pass = filter.equalsIgnoreCase("PASS")
+  
+  lazy val info= arr(7).split(";").map(pair=>{
+   
+    val pp=pair.split("=");
+    if(pp.size==2)
+      pp(0)->pp(1)
+    else
+      pair->"raw"
+  
+  }).toMap
 
   lazy val passOrUnfiltered = pass || filter.equals(".")
 
