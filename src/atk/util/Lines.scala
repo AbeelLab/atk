@@ -16,6 +16,11 @@ package atk.util
 
 import scala.io.Source
 import java.io.File
+import java.io.PushbackInputStream
+import java.util.zip.GZIPInputStream
+import java.io.InputStream
+import java.io.FileInputStream
+
 /**
  * Utility methods to handle lines in files
  *
@@ -45,7 +50,7 @@ trait Lines {
     list.map(_.split(sep)(column))
   }
 
-  def tMap(list: List[String], keyColumn: Int = 0, valueColumn: Int = 1, sep: String = "\t", limitSplit: Boolean = true, splitLimit: Int = 2, trim:Boolean=false): Map[String, String] = {
+  def tMap(list: List[String], keyColumn: Int = 0, valueColumn: Int = 1, sep: String = "\t", limitSplit: Boolean = true, splitLimit: Int = 2, trim: Boolean = false): Map[String, String] = {
     list.map(l => {
       val arr = (
         if (limitSplit)
@@ -54,10 +59,10 @@ trait Lines {
           l.split(sep));
       assume(keyColumn < arr.size, "Key column (" + keyColumn + ") out of range: " + arr.mkString(","))
       assume(valueColumn < arr.size, "Value column (" + valueColumn + ") out of range: " + arr.mkString(","))
-      if(trim)
-    	  arr(keyColumn) -> arr(valueColumn)
-      else 
-          arr(keyColumn).trim -> arr(valueColumn).trim
+      if (trim)
+        arr(keyColumn) -> arr(valueColumn)
+      else
+        arr(keyColumn).trim -> arr(valueColumn).trim
     }).toMap
   }
 
@@ -66,7 +71,7 @@ trait Lines {
   implicit def toRight[String, File](right: File): Either[String, File] = Right(right)
 
   @Deprecated
-  def tLinesIterator(file: Either[String, File], skipComments: Boolean = true, skipBlank: Boolean = true): Iterator[String]= {
+  def tLinesIterator(file: Either[String, File], skipComments: Boolean = true, skipBlank: Boolean = true): Iterator[String] = {
     tIterator(file, skipComments, skipBlank)._1
   }
 
@@ -79,15 +84,32 @@ trait Lines {
         parent = parent.getParentFile()
       }
     }
-    val src = Source.fromFile(ff)
+    val src = Source.fromInputStream(wrap(new FileInputStream(ff)))("iso-8859-1")
     src.getLines.filterNot(f => skipComments && f.startsWith("#")).filterNot(f => skipBlank && f.trim.size == 0) -> src
   }
+
+  private def wrap(stream: InputStream): InputStream = {
+
+    val tmp = new PushbackInputStream(stream, 2);
+    //			PushbackInputStream tmp = (PushbackInputStream) stream;
+    val a = tmp.read();
+    val b = tmp.read();
+    tmp.unread(b);
+    tmp.unread(a);
+    if (a == 0x1f && b == 0x8b) {
+      new GZIPInputStream(tmp);
+    } else{ 
+      stream;
+    }
+
+  }
+
   /**
    *
    */
   def tLines(file: Either[String, File], skipComments: Boolean = true, skipBlank: Boolean = true): List[String] = {
-    val it=tIterator(file, skipComments, skipBlank)
-    val list=it._1.toList
+    val it = tIterator(file, skipComments, skipBlank)
+    val list = it._1.toList
     it._2.close
     list
   }
