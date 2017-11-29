@@ -99,7 +99,7 @@ trait Lines {
     if (a == 0x1f && b == 0x8b) {
       new GZIPInputStream(tmp);
     } else{ 
-      stream;
+      tmp;
     }
 
   }
