@@ -19,7 +19,8 @@ class NixWriter(f: String,config:AnyRef=null,noheader:Boolean=false) extends Pri
   }
 
   override def close(){
-    println("## This analysis finished " + LocalDateTime.now())
+    if(!noheader)
+      println("## This analysis finished " + LocalDateTime.now())
     super.close
     
   }
