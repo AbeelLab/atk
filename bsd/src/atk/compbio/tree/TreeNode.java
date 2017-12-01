@@ -218,7 +218,7 @@ public class TreeNode {
 	 * are stretched to make leaves right aligned, with minimal integral
 	 * lengths.
 	 */
-	public float weight = 0.0f;
+	public float weight = 1.0f;
 
 	/**
 	 * Leftmost (minimum) leaf node under this internal node (or this node for
