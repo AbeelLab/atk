@@ -18,9 +18,9 @@ object URLCache {
 
   var queryWait: Long = 15 * 1000
 
-  private var lastQuery:Long = 0
+  private var lastQuery: Long = 0
 
-  def query(url: String, refresh: Long = (1000L * 60 * 60 * 24 * 30)): List[String] = {
+  def query(url: String, refresh: Long = (1000L * 60 * 60 * 24 * 30), cookies: String = null): List[String] = {
 
     /**
      *  Older than a month
@@ -54,7 +54,17 @@ object URLCache {
         val conn = u.openConnection();
         if (debug)
           println("cache:encoding - " + conn.getContentEncoding())
+        
+        if(cookies!=null){
+          if(debug)
+              println("setting cookies: "+cookies)
+          conn.setRequestProperty("Cookie", cookies);
+        }
+        conn.connect()
         val lines = Source.fromInputStream(conn.getInputStream())("UTF-8").getLines.toList
+
+        
+     
 
         if (!lines.mkString(" ").contains("Timed out")) {
           val pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(cached), "UTF8"), true)
