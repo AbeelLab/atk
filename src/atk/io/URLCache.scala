@@ -9,6 +9,15 @@ import java.util.Date
 import java.nio.charset.StandardCharsets
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
+import javax.net.ssl.SSLContext
+import javax.net.ssl.X509TrustManager
+import java.security.cert.X509Certificate
+import javax.net.ssl.KeyManager
+import java.security.SecureRandom
+import javax.net.ssl.HttpsURLConnection
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLSession
+
 /**
  * Simple object to cache URL reads
  */
@@ -20,7 +29,7 @@ object URLCache {
 
   private var lastQuery: Long = 0
 
-  def query(url: String, refresh: Long = (1000L * 60 * 60 * 24 * 30), cookies: String = null): List[String] = {
+  def query(url: String, refresh: Long = (1000L * 60 * 60 * 24 * 30), cookies: String = null,bypassCertificates:Boolean=false): List[String] = {
 
     /**
      *  Older than a month
@@ -51,26 +60,38 @@ object URLCache {
         lastQuery = System.currentTimeMillis()
 
         val u = new URL(url);
-        val conn = u.openConnection();
+        val conn = if (url.startsWith("https")) {
+          val ctx = SSLContext.getInstance("TLS");
+          ctx.init(Array.empty[KeyManager], (List(new DefaultTrustManager())).toArray, new SecureRandom());
+          SSLContext.setDefault(ctx);
+          val conns = (u.openConnection()).asInstanceOf[HttpsURLConnection]
+          conns.setHostnameVerifier(new HostnameVerifier() {
+            override def verify(arg0: String, arg1: SSLSession): Boolean = true
+          });
+
+          conns
+        } else {
+          u.openConnection();
+        }
+
         if (debug)
           println("cache:encoding - " + conn.getContentEncoding())
-        
-        if(cookies!=null){
-          if(debug)
-              println("setting cookies: "+cookies)
+
+        if (cookies != null) {
+          if (debug)
+            println("setting cookies: " + cookies)
           conn.setRequestProperty("Cookie", cookies);
         }
+
         conn.connect()
         val lines = Source.fromInputStream(conn.getInputStream())("UTF-8").getLines.toList
-
-        
-     
 
         if (!lines.mkString(" ").contains("Timed out")) {
           val pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(cached), "UTF8"), true)
           pw.println(lines.mkString("\n"))
           pw.close
         }
+        
 
       }
     }
@@ -78,4 +99,11 @@ object URLCache {
 
   }
 
+  private class DefaultTrustManager extends X509TrustManager {
+
+    override def checkClientTrusted(arg0: Array[X509Certificate], arg1: String) = {}
+    override def checkServerTrusted(arg0: Array[X509Certificate], arg1: String) {}
+
+    override def getAcceptedIssuers(): Array[X509Certificate] = null
+  }
 }
