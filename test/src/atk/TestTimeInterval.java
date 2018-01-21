@@ -7,7 +7,9 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import be.abeel.util.TimeInterval;
+import atk.util.TimeInterval;
+
+
 
 public class TestTimeInterval {
 	@Test
