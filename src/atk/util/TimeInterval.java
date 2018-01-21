@@ -23,14 +23,16 @@ import java.io.Serializable;
  */
 public class TimeInterval implements Serializable {
 
-	private static final long serialVersionUID = -5251967760337130846L;
-
+	
+	
+	private static final long serialVersionUID = 8314679091736017283L;
+	
 	private long milliseconds, seconds, minutes, hours, days;
 
 	public TimeInterval(String s) {
-		String[] d = s.split("d ");
-		days = Long.parseLong(d[0]);
-		String[] h = d[1].split(":");
+		String[] d = s.split("d");
+		days = Long.parseLong(d[0].trim());
+		String[] h = d[1].trim().split(":");
 		hours = Long.parseLong(h[0]);
 		minutes = Long.parseLong(h[1]);
 		String[] ms = h[2].split("'");
@@ -54,7 +56,7 @@ public class TimeInterval implements Serializable {
 	}
 
 	public String toString() {
-		return days + "d " + hours + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds) + "'" + milliseconds;
+		return days + "d" + hours + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds) + "'" + milliseconds;
 
 	}
 
