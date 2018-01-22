@@ -29,6 +29,16 @@ object URLCache {
 
   private var lastQuery: Long = 0
 
+  def age(url:String,aging:Long){
+     val hash = MD5Tools.md5(url)
+
+    val cached = new File(".url-cache/" + hash + ".blob")
+     
+    if(cached.exists()){
+      cached.setLastModified(cached.lastModified()-aging)
+    }
+  }
+  
   def query(url: String, refresh: Long = (1000L * 60 * 60 * 24 * 30), cookies: String = null,bypassCertificates:Boolean=false): List[String] = {
 
     /**
