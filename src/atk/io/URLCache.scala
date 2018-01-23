@@ -96,10 +96,10 @@ object URLCache {
         }
 
         conn.connect()
-        val lines = Source.fromInputStream(conn.getInputStream())("UTF-8").getLines.toList
+        val lines = Source.fromInputStream(conn.getInputStream())("ISO-8859-1").getLines.toList
 
         if (!lines.mkString(" ").contains("Timed out")) {
-          val pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(cached), "UTF8"), true)
+          val pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(cached), "ISO-8859-1"), true)
           pw.println(lines.mkString("\n"))
           pw.close
         }
@@ -107,7 +107,7 @@ object URLCache {
 
       }
     }
-    Source.fromFile(cached)("UTF-8").getLines.toList
+    Source.fromFile(cached)("ISO-8859-1").getLines.toList
 
   }
 
