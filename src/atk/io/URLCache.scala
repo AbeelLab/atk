@@ -60,7 +60,9 @@ object URLCache {
       println("cache:hash - " + hash)
 
     if (!cached.exists() || cached.length() == 0 || old(cached.lastModified())) {
-
+      if(debug){
+        println("--retrieve--exist:" +cached.exists()+";len:"+cached.length()+";old:"+old(cached.lastModified()))
+      }
       cached.delete()
       while (!cached.exists()) {
         /* Wait at least 15 seconds between queries */
