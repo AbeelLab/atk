@@ -51,7 +51,7 @@ object URLCache {
     if (debug)
       println("cache:query  " + url)
 
-    val hash = MD5Tools.md5(url)
+    val hash = MD5Tools.md5(url+"-"+encoding)
 
     val cached = new File(".url-cache/" + hash + ".blob")
     cached.getParentFile().mkdirs()
