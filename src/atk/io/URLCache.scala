@@ -39,7 +39,7 @@ object URLCache {
     }
   }
   
-  def query(url: String, refresh: Long = (1000L * 60 * 60 * 24 * 30), cookies: String = null,bypassCertificates:Boolean=false): List[String] = {
+  def query(url: String, refresh: Long = (1000L * 60 * 60 * 24 * 30), cookies: String = null,bypassCertificates:Boolean=false,encoding:String="ISO-8859-1"): List[String] = {
 
     /**
      *  Older than a month
@@ -96,10 +96,10 @@ object URLCache {
         }
 
         conn.connect()
-        val lines = Source.fromInputStream(conn.getInputStream())("ISO-8859-1").getLines.toList
+        val lines = Source.fromInputStream(conn.getInputStream())(encoding).getLines.toList
 
         if (!lines.mkString(" ").contains("Timed out")) {
-          val pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(cached), "ISO-8859-1"), true)
+          val pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(cached), encoding), true)
           pw.println(lines.mkString("\n"))
           pw.close
         }
@@ -107,7 +107,7 @@ object URLCache {
 
       }
     }
-    Source.fromFile(cached)("ISO-8859-1").getLines.toList
+    Source.fromFile(cached)(encoding).getLines.toList
 
   }
 
