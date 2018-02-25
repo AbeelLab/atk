@@ -39,8 +39,9 @@ object URLCache {
     }
   }
   
-  def query(url: String, refresh: Long = (1000L * 60 * 60 * 24 * 30), cookies: String = null,bypassCertificates:Boolean=false,encoding:String="ISO-8859-1"): List[String] = {
+  def query(url: String, refresh: Long = (1000L * 60 * 60 * 24 * 30), cookies: String = null,bypassCertificates:Boolean=false,encoding:String="ISO-8859-1",key:String=null): List[String] = {
 
+    val urlKey=if(key!=null)key else url
     /**
      *  Older than a month
      */
@@ -51,7 +52,7 @@ object URLCache {
     if (debug)
       println("cache:query  " + url)
 
-    val hash = MD5Tools.md5(url+"-"+encoding)
+    val hash = MD5Tools.md5(urlKey+"-"+encoding)
 
     val cached = new File(".url-cache/" + hash + ".blob")
     cached.getParentFile().mkdirs()
