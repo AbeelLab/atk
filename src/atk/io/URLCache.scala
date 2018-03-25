@@ -23,6 +23,12 @@ import javax.net.ssl.SSLSession
  */
 object URLCache {
 
+  val DAY=1000L * 60 * 60 * 24
+  val WEEK=1000L * 60 * 60 * 24 *7
+  val MONTH=1000L * 60 * 60 * 24 * 30;
+  val YEAR=1000L * 60 * 60 * 24 * 365;
+  
+  
   var debug = false
 
   var queryWait: Long = 15 * 1000
@@ -39,7 +45,7 @@ object URLCache {
     }
   }
   
-  def query(url: String, refresh: Long = (1000L * 60 * 60 * 24 * 30), cookies: String = null,bypassCertificates:Boolean=false,encoding:String="ISO-8859-1",key:String=null): List[String] = {
+  def query(url: String, refresh: Long = MONTH, cookies: String = null,bypassCertificates:Boolean=false,encoding:String="ISO-8859-1",key:String=null): List[String] = {
 
     val urlKey=if(key!=null)key else url
     /**
