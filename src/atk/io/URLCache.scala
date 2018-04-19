@@ -23,31 +23,34 @@ import javax.net.ssl.SSLSession
  */
 object URLCache {
 
-  val DAY=1000L * 60 * 60 * 24
-  val WEEK=1000L * 60 * 60 * 24 *7
-  val MONTH=1000L * 60 * 60 * 24 * 30;
-  val YEAR=1000L * 60 * 60 * 24 * 365;
-  
-  
+  val DAY = 1000L * 60 * 60 * 24
+  val WEEK = 1000L * 60 * 60 * 24 * 7
+  val MONTH = 1000L * 60 * 60 * 24 * 30;
+  val YEAR = 1000L * 60 * 60 * 24 * 365;
+
   var debug = false
 
   var queryWait: Long = 15 * 1000
 
   private var lastQuery: Long = 0
 
-  def age(url:String,aging:Long){
-     val hash = MD5Tools.md5(url)
+  def age(url: String, encoding: String = "ISO-8859-1", aging: Long) {
+    val hash = md5key(url, encoding)
 
     val cached = new File(".url-cache/" + hash + ".blob")
-     
-    if(cached.exists()){
-      cached.setLastModified(cached.lastModified()-aging)
+
+    if (cached.exists()) {
+      cached.setLastModified(cached.lastModified() - aging)
     }
   }
-  
-  def query(url: String, refresh: Long = MONTH, cookies: String = null,bypassCertificates:Boolean=false,encoding:String="ISO-8859-1",key:String=null): List[String] = {
 
-    val urlKey=if(key!=null)key else url
+  private def md5key(url: String, encoding: String) = {
+    MD5Tools.md5(url + "-" + encoding)
+  }
+
+  def query(url: String, refresh: Long = MONTH, cookies: String = null, bypassCertificates: Boolean = false, encoding: String = "ISO-8859-1", key: String = null): List[String] = {
+
+    val urlKey = if (key != null) key else url
     /**
      *  Older than a month
      */
@@ -58,7 +61,7 @@ object URLCache {
     if (debug)
       println("cache:query  " + url)
 
-    val hash = MD5Tools.md5(urlKey+"-"+encoding)
+    val hash = md5key(urlKey, encoding)
 
     val cached = new File(".url-cache/" + hash + ".blob")
     cached.getParentFile().mkdirs()
@@ -67,8 +70,8 @@ object URLCache {
       println("cache:hash - " + hash)
 
     if (!cached.exists() || cached.length() == 0 || old(cached.lastModified())) {
-      if(debug){
-        println("--retrieve--exist:" +cached.exists()+";len:"+cached.length()+";old:"+old(cached.lastModified()))
+      if (debug) {
+        println("--retrieve--exist:" + cached.exists() + ";len:" + cached.length() + ";old:" + old(cached.lastModified()))
       }
       cached.delete()
       while (!cached.exists()) {
@@ -93,8 +96,7 @@ object URLCache {
           u.openConnection();
         }
 
-        if (debug)
-          println("cache:encoding - " + conn.getContentEncoding())
+        
 
         if (cookies != null) {
           if (debug)
@@ -104,6 +106,8 @@ object URLCache {
 
         conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/24.0");
         conn.connect()
+        if (debug)
+          println("cache:encoding - " + conn.getContentEncoding())
         val lines = Source.fromInputStream(conn.getInputStream())(encoding).getLines.toList
 
         if (!lines.mkString(" ").contains("Timed out")) {
@@ -111,7 +115,6 @@ object URLCache {
           pw.println(lines.mkString("\n"))
           pw.close
         }
-        
 
       }
     }
