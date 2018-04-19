@@ -17,5 +17,4 @@ Add Java runtime (1.8)
 
 Nightly builds
 ===
-(Currently broken -- 2016/10/07)
-http://abeellab.org/jenkins/atk/
+https://genomeview.org/jenkins/atk
