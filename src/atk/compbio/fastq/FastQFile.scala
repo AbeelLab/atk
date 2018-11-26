@@ -2,13 +2,17 @@ package atk.compbio.fastq
 
 import java.io.File
 import scala.io.Source
+import atk.util.Lines
 
-object FastQFile {
+object FastQFile extends Lines {
 
   case class FastqRecord(name: String, seq: String, qual: String);
 
   def apply(path: File): Iterator[FastqRecord] = {
-    Source.fromFile(path).getLines.filterNot(_.trim().length() == 0).grouped(4).map(group => {
+    
+    
+    
+    tLinesIterator(path,skipComments=false).grouped(4).map(group => {
       new FastqRecord(group(0).drop(1),group(1),group(3))
     })
   }
