@@ -25,7 +25,7 @@
 
 
 
-		<include name="lib_compile/scala-2.11.8/scala-library.jar" />
+		<include name="lib_compile/scala-library-2.12.3.jar" />
 	</fileset>
 
 
@@ -132,9 +132,9 @@
 
 				<include name="**/*.jar" />
 			</fileset>
-			<fileset dir="lib_compile/scala-2.11.8/">
+			<fileset dir="lib_compile/">
 
-				<include name="scala-library.jar" />
+				<include name="scala-library-2.12.3.jar" />
 			</fileset>
 		</copy>
 
