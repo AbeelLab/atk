@@ -1,27 +1,9 @@
-*.class
-*.log
+# Ignore Gradle project-specific cache directory
+.gradle
 
-# Project specific
-bin/
-
-# Eclipse specific
-.classpath
-.cache
-.settings
-
-# sbt specific
-dist/*
-target/
-lib_managed/
-src_managed/
-project/boot/
-project/plugins/project/
-
-# Scala-IDE specific
-.scala_dependencies
-/.cache-main
+# Ignore Gradle build output directory
+build
+/bin/
 /.cache-tests
-/atk-development.zip
-/tmp.txt
-/tmp2.txt
-/.url-cache/
+/.cache-main
+/.classpath
