@@ -28,16 +28,24 @@ repositories {
 sourceSets {
     main {
         java {
-            srcDirs 'src'
-            srcDirs 'bsd/src'
-            srcDirs 'gpl/src'
-            srcDirs 'tools/src'
-            
+            srcDir 'bsd/src'
+            srcDir 'gpl/src'
+            srcDir 'tools/src'
+            srcDir 'src'
+        }
+        scala {
+            srcDir 'bsd/src'
+            srcDir 'gpl/src'
+            srcDir 'tools/src'
+            srcDir 'src'
         }
     }
     test{
     	java{
-    		srcDirs 'test/src'
+    		srcDir 'test/src'
+    	}
+    	scala{
+    		srcDir 'test/src'
     	}
     }
  }
@@ -60,8 +68,10 @@ dependencies {
 	// https://mvnrepository.com/artifact/junit/junit
 	testCompile group: 'junit', name: 'junit', version: '4.12'
 	
-
-
+	implementation 'org.scala-lang:scala-library:2.12.3'
+	testImplementation 'junit:junit:4.12' 
+    testImplementation 'org.scalatest:scalatest_2.12:3.0.5' 
+	
 }
 
 task fatJar(type: Jar) {
@@ -70,10 +80,7 @@ task fatJar(type: Jar) {
 			$BUILD_NUMBER='develop'
 		}
 	}
-	manifest {
-        attributes 'Implementation-Title': 'ATK library',  
-        	'Implementation-Version': '1.0'
-    }
+	
     baseName = project.name +'-'+$BUILD_NUMBER+ '-all'
     from { configurations.compile.collect { 
     it.isDirectory() ? it : zipTree(it).matching{exclude{it.path.contains('META-INF')}}
