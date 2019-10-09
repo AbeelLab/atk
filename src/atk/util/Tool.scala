@@ -37,9 +37,9 @@ object Tool extends Tool {
  */
 trait Tool extends Lines with LoggingTrait{
 
-  val version = "There is no version information available for this tool"
+  def version = "There is no version information available for this tool"
 
-  val description = "There is no description available for this tool"
+  def description = "There is no description available for this tool"
 
   val nfP = NumberFormat.getPercentInstance(Locale.US)
   nfP.setMaximumFractionDigits(2)
