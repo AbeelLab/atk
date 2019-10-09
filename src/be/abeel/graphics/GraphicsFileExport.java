@@ -109,18 +109,5 @@ public class GraphicsFileExport {
         Image4Jexport.exportICO(d,fileName,x,y);
     }
 
-    /**
-     * Export the drawable to an SVG file
-     * 
-     * @param d
-     * @param fileName
-     * @param x
-     * @param y
-     */
-    public static void exportSVG(Drawable d, String fileName, int x, int y) {
-
-      SVGexport.exportSVG(d,fileName,x,y);
-
-    }
-
+    
 }
