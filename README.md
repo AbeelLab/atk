@@ -11,10 +11,10 @@ Individual tools may have specific licenses to accommodate library and/or packag
 
 Eclipse setup
 ===
-Add scala library (2.11.8)
-Add Java runtime (1.8)
+Add scala library (2.12.3)
+Add Java runtime (1.11)
 
 
 Nightly builds
 ===
-https://genomeview.org/jenkins/atk
+https://abeellab.org/jenkins/atk
