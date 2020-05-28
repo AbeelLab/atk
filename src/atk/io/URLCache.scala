@@ -44,6 +44,11 @@ object URLCache {
     }
   }
 
+  def delete(urlKey:String, encoding: String = "ISO-8859-1"){
+     val hash = md5key(urlKey, encoding)
+     val cached = new File(".url-cache/" + hash + ".blob")
+     cached.delete()
+  }
   private def md5key(url: String, encoding: String) = {
     MD5Tools.md5(url + "-" + encoding)
   }
