@@ -27,7 +27,7 @@ object URLCache {
   val WEEK = 1000L * 60 * 60 * 24 * 7
   val MONTH = 1000L * 60 * 60 * 24 * 30;
   val YEAR = 1000L * 60 * 60 * 24 * 365;
-
+  val ALWAYS = 0;
   var debug = false
 
   var queryWait: Long = 15 * 1000
