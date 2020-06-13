@@ -64,13 +64,13 @@ dependencies {
 	compile group: 'com.lowagie', name: 'itext', version: '2.1.5'
 
 	// https://mvnrepository.com/artifact/org.scalatest/scalatest
-	testCompile group: 'org.scalatest', name: 'scalatest_2.12.0-M4', version: '2.2.6'
+	//compile group: 'org.scalatest', name: 'scalatest_2.12.0-M4', version: '2.2.6'
 	// https://mvnrepository.com/artifact/junit/junit
 	testCompile group: 'junit', name: 'junit', version: '4.12'
 	
-	implementation 'org.scala-lang:scala-library:2.12.3'
+	compile 'org.scala-lang:scala-library:2.12.3'
 	testImplementation 'junit:junit:4.12' 
-    testImplementation 'org.scalatest:scalatest_2.12:3.0.5' 
+    compile 'org.scalatest:scalatest_2.12:3.0.5' 
 	
 }
 
@@ -88,5 +88,9 @@ task fatJar(type: Jar) {
     }
     with jar
 }
-
+task spec(dependsOn: ['testClasses'], type: JavaExec) {
+  main = 'org.scalatest.tools.Runner'
+  args = ['-R', 'build/classes/scala/test', '-o']
+  classpath = sourceSets.test.runtimeClasspath
+}
 
