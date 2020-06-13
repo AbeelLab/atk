@@ -5,6 +5,10 @@ import java.io.PrintWriter
 
 object TestURLCache {
   def main(args: Array[String]) {
+    URLCache.debug=true
+    URLCache.queryWait = 1000
+   val us = URLCache.query("https://brickset.com/buy/amazon", URLCache.DAY, cookies = "PreferredCountry2=CountryCode=US&CountryName=United States", key = "brickset_US")
+    val eu = URLCache.query("https://brickset.com/buy/amazon", URLCache.DAY, encoding = "UTF-8", cookies = "PreferredCountry2=CountryCode=NL&CountryName=Netherlands", key = "brickset_EU")
 
   }
 }
