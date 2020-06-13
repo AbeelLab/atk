@@ -7,3 +7,12 @@ build
 /.cache-tests
 /.cache-main
 /.classpath
+/rect.bmp
+/rect.gif
+/rect.ico
+/rect.pdf
+/rect.png
+/test.txt.gz
+/tmp.txt
+/tmp2.txt
+/.url-cache
