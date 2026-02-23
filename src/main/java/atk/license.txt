@@ -1,0 +1,1 @@
+Classes in this source folder are available under a GPL license
